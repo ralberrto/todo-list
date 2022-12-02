@@ -92,9 +92,6 @@ gettingStarted.addTask(Task(
     new Date()
 ))
 
-gettingStarted.tasks.forEach(task => console.log(task.dueDate.getDate()));
-console.log(gettingStarted.tasks);
-
 const projects = [
     gettingStarted,
     Project(

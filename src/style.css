@@ -124,6 +124,12 @@ div#add-container button#add {
     background-color: var(--light-gray);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
+    border: 1px solid var(--light-gray);
+}
+
+div#add-container button#add:active {
+    box-shadow: inset 1px 1px 1px black,
+        inset -1px 1px 1px black;
 }
 
 footer {
