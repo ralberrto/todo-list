@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "grace-covered";
+    src: url("./Covered_By_Your_Grace/CoveredByYourGrace-Regular.ttf");
+}
+
+:root {
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "grace-covered";
+}
