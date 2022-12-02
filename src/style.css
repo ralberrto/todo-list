@@ -4,7 +4,8 @@
 }
 
 :root {
-
+    --header-height: max(10vh, 60px);
+    --footer-height: max(5vh, 40px);
 }
 
 * {
@@ -13,4 +14,54 @@
 
 body {
     font-family: "grace-covered";
+    margin: 0;
+}
+
+header {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: var(--header-height);
+    width: 100vw;
+    box-shadow: 2px 2px 3px black;
+    padding-left: 1rem;
+}
+
+div#app-body {
+    padding: 1rem;
+}
+
+div#container {
+    margin-top: var(--header-height);
+    margin-bottom: var(--footer-height);
+    min-height: calc(100vh - var(--footer-height) - var(--header-height) - 1rem*2); 
+
+    border: 3px solid #cccccc;
+    border-radius: 10px;
+}
+
+footer {
+    position: fixed;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    height: var(--footer-height);
+    width: 100vw;
+}
+
+footer > button {
+    flex: 1;
+    background-color: white;
+    font-family: "grace-covered";
+    font-size: 1.5rem;
+    outline: none;
+    border: none;
+    text-align: center;
+    box-shadow: 2px -2px 3px black;
+}
+
+footer > button.active {
+    box-shadow: inset 2px 2px 3px black;
 }
