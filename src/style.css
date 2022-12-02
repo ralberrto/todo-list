@@ -9,6 +9,9 @@
 
     --header-height: max(10vh, 60px);
     --footer-height: clamp(40px, 8vh, 60px);
+
+    --bradius: 1rem;
+    --bweight: 3px;
 }
 
 * {
@@ -49,12 +52,35 @@ div#app-body .header {
 
 div#container {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    border: 3px solid var(--light-gray);
-    border-radius: 1rem;
+    border: var(--bweight) solid var(--light-gray);
+    border-radius: var(--bradius);
 }
 
 div#container ul {
-    list-style-type: circle;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+div#container ul > li:first-child {
+    --actual-bradius: calc(var(--bradius) - var(--bweight));
+    border-top-left-radius: var(--actual-bradius);
+    border-top-right-radius: var(--actual-bradius);
+}
+
+div#container ul > li:last-child {
+    --actual-bradius: calc(var(--bradius) - var(--bweight));
+    border-bottom-left-radius: var(--actual-bradius);
+    border-bottom-right-radius: var(--actual-bradius);
+}
+
+div#container ul li {
+    padding: 0.5rem;
+    margin: 0.5rem, 0;
+}
+
+div#container ul li:nth-child(odd) {
+    background-color: #00008022;
 }
 
 div#container li p {
@@ -65,7 +91,7 @@ div#container li p {
 div#container li p:first-child {
     font-size: 1.5rem;
     font-weight: bold;
-    color: black;
+    color: navy;
 }
 
 footer {
@@ -85,9 +111,10 @@ footer > button {
     outline: none;
     border: none;
     text-align: center;
-    box-shadow: 2px -2px 3px black;
+    box-shadow: inset 2px 2px 3px black;
 }
 
 footer > button.active {
-    box-shadow: inset 2px 2px 3px black;
+    font-size: 1.8rem;
+    box-shadow: 2px -2px 3px black;
 }
