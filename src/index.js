@@ -1,17 +1,5 @@
 import "./style.css";
 
-const appBody = document.getElementById("app-body");
-const mainContainer = document.createElement("div");
-mainContainer.setAttribute("id", "container");
-
-const projectsTab = document.querySelector("button#projects");
-projectsTab.onclick = renderProjects;
-
-const tasksTab = document.querySelector("button#tasks");
-tasksTab.onclick = renderTasks;
-
-const tabs = [projectsTab, tasksTab];
-
 const Task = function(title, description, dueDate, priority) {
     const pending = true;
     return {title, description, dueDate, priority, pending};
@@ -25,20 +13,38 @@ const Project = function(name, description) {
     return {name, description, tasks, addTask};
 };
 
-const gettingStarted = Project(
-    "Getting Started",
-    "Learn the features that My List App puts in your hand, it's simple!"
-);
+const displayController = (function() {
+    const _appBody = document.getElementById("app-body");
 
-gettingStarted.tasks.forEach(task => console.log(task));
+    const _mainContainer = document.createElement("div");
+    _mainContainer.setAttribute("id", "container");
 
-const projects = [
-    gettingStarted,
-    Project(
-        "Oldenburg",
-        "Apply to Oldenburg Universität"
-    ),
-];
+    const _clearAppBody = function() {
+        _appBody.innerHTML = "";
+        _mainContainer.innerHTML = "";
+        _appendContainerToBody();
+    }
+
+    function _appendContainerToBody() {
+        _appBody.appendChild(_mainContainer);
+    }
+
+    function renderProjects() {
+        tabs.forEach(tab => tab.classList.remove("active"));
+        this.classList.add("active");
+        _clearAppBody();
+        contentGenerator.prependHeader(_appBody, "PROJECTS");
+        contentGenerator.appendProjectList(_mainContainer, projects);
+    }
+
+    function renderTasks() {
+        tabs.forEach(tab => tab.classList.remove("active"));
+        this.classList.add("active");
+        _clearAppBody();
+        contentGenerator.prependHeader(_appBody, "TASKS");
+    }
+    return {renderProjects, renderTasks};
+})();
 
 const contentGenerator = (function() {
     const prependHeader = function(target, headerText) {
@@ -71,27 +77,29 @@ const contentGenerator = (function() {
     return {prependHeader, appendProjectList};
 })();
 
-function appenContainerToBody() {
-    appBody.appendChild(mainContainer);
-}
+const gettingStarted = Project(
+    "Getting Started",
+    "Learn the features that My List App puts in your hand, it's simple!"
+);
 
-function clearAppBody() {
-    appBody.innerHTML = "";
-    mainContainer.innerHTML = "";
-    appenContainerToBody();
-}
+gettingStarted.tasks.forEach(task => console.log(task));
 
-function renderProjects() {
-    tabs.forEach(tab => tab.classList.remove("active"));
-    this.classList.add("active");
-    clearAppBody();
-    contentGenerator.prependHeader(appBody, "PROJECTS");
-    contentGenerator.appendProjectList(mainContainer, projects);
-}
+const projects = [
+    gettingStarted,
+    Project(
+        "Agency",
+        "Start up freelance consultant agency"
+    ),
+    Project(
+        "Garden",
+        "Make functional hydroponics garden"
+    )
+];
 
-function renderTasks() {
-    tabs.forEach(tab => tab.classList.remove("active"));
-    this.classList.add("active");
-    clearAppBody();
-    contentGenerator.prependHeader(appBody, "TASKS");
-}
+const projectsTab = document.querySelector("button#projects");
+projectsTab.onclick = displayController.renderProjects;
+
+const tasksTab = document.querySelector("button#tasks");
+tasksTab.onclick = displayController.renderTasks;
+
+const tabs = [projectsTab, tasksTab];
