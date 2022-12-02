@@ -37,6 +37,7 @@ header {
 
 div#app-body {
     padding: 1rem;
+    margin-bottom: var(--footer-height);
 }
 
 div#app-body .header {
@@ -52,7 +53,8 @@ div#container {
     border-radius: 1rem;
 }
 
-div#container li {
+div#container ul {
+    list-style-type: circle;
 }
 
 div#container li p {

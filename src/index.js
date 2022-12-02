@@ -3,21 +3,32 @@ import "./style.css";
 const appBody = document.getElementById("app-body");
 const mainContainer = document.getElementById("container");
 
-const Project = function(name, description) {
-    return {name, description};
+const Task = function(title, description, dueDate, priority) {
+    const pending = true;
+    return {title, description, dueDate, priority, pending};
 };
 
-const renderProject = function(target, projects) {
-
-}
+const Project = function(name, description) {
+    const tasks = [];
+    const addTask = function(task) {
+        tasks.push(task);
+    }
+    return {name, description, tasks, addTask};
+};
 
 const gettingStarted = Project(
     "Getting Started",
     "Learn the features that My List App puts in your hand, it's simple!"
 );
 
+gettingStarted.tasks.forEach(task => console.log(task));
+
 const projects = [
     gettingStarted,
+    Project(
+        "Oldenburg",
+        "Apply to Oldenburg Universität"
+    ),
 ];
 
 const contentGenerator = (function() {
