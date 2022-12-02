@@ -21,15 +21,35 @@ const projects = [
 ];
 
 const contentGenerator = (function() {
-    const  contentHeader = function(text) {
+    const prependHeader = function(target, headerText) {
         const header = document.createElement("div");
         const titleText = document.createElement("p");
         header.appendChild(titleText);
         titleText.classList.add("header");
-        titleText.textContent = text;
-        return header;
+        titleText.textContent = headerText;
+        target.prepend(header);
     };
-    return {contentHeader};
+    
+    const appendProjectList = function(target, projects) {
+        let list = document.createElement("ul");
+        for (let project of projects) {
+            let item = document.createElement("li");
+            list.appendChild(item);
+
+            let projectName = document.createElement("p");
+            projectName.textContent = project.name;
+            item.appendChild(projectName);
+
+            let projectDescription = document.createElement("p");
+            projectDescription.textContent = project.description;
+            item.appendChild(projectDescription);
+
+            target.appendChild(list);
+        }
+    };
+
+    return {prependHeader, appendProjectList};
 })();
 
-appBody.prepend(contentGenerator.contentHeader("PROJECTS"));
+contentGenerator.prependHeader(appBody, "PROJECTS");
+contentGenerator.appendProjectList(mainContainer, projects);
