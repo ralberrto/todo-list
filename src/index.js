@@ -1,4 +1,5 @@
 import "./style.css";
+import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
     const pending = true;
@@ -14,6 +15,8 @@ const Project = function(name, description) {
 };
 
 const displayController = (function() {
+    const _body = document.body;
+
     const _appBody = document.getElementById("app-body");
 
     const _mainContainer = document.createElement("div");
@@ -23,26 +26,27 @@ const displayController = (function() {
         _appBody.innerHTML = "";
         _mainContainer.innerHTML = "";
         _appendContainerToBody();
-    }
+    };
 
-    function _appendContainerToBody() {
+    const _appendContainerToBody = function() {
         _appBody.appendChild(_mainContainer);
-    }
-
-    function renderProjects() {
+    };
+    
+    const renderProjects = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
         contentGenerator.prependHeader(_appBody, "PROJECTS");
         contentGenerator.appendProjectList(_mainContainer, projects);
-    }
+    };
 
-    function renderTasks() {
+    const renderTasks = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
         contentGenerator.prependHeader(_appBody, "TASKS");
-    }
+    };
+
     return {renderProjects, renderTasks};
 })();
 
@@ -82,7 +86,14 @@ const gettingStarted = Project(
     "Learn the features that My List App puts in your hand, it's simple!"
 );
 
-gettingStarted.tasks.forEach(task => console.log(task));
+gettingStarted.addTask(Task(
+    "Add your projects",
+    "Explore the functionality that My Todo List offers you",
+    new Date()
+))
+
+gettingStarted.tasks.forEach(task => console.log(task.dueDate.getDate()));
+console.log(gettingStarted.tasks);
 
 const projects = [
     gettingStarted,
@@ -103,3 +114,10 @@ const tasksTab = document.querySelector("button#tasks");
 tasksTab.onclick = displayController.renderTasks;
 
 const tabs = [projectsTab, tasksTab];
+
+const addBtn = document.querySelector("button#add");
+const addIcon = new Image();
+addIcon.src = addSrc;
+addBtn.appendChild(addIcon);
+
+displayController.renderProjects.call(projectsTab);

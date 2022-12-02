@@ -6,9 +6,12 @@
 :root {
     --light-gray: #cccccc;
     --dark-gray: #777777;
+    --lighter-gray: #eeeeee;
 
     --header-height: max(10vh, 60px);
     --footer-height: clamp(40px, 8vh, 60px);
+    --add-btn-height: clamp(40px, 8vh, 60px);
+    --add-btn-margin: 1rem;
 
     --bradius: 1rem;
     --bweight: 3px;
@@ -40,7 +43,7 @@ header {
 
 div#app-body {
     padding: 1rem;
-    margin-bottom: var(--footer-height);
+    margin-bottom: calc(var(--footer-height) + var(--add-btn-height) + var(--add-btn-margin));
 }
 
 div#app-body .header {
@@ -80,7 +83,7 @@ div#container ul li {
 }
 
 div#container ul li:nth-child(odd) {
-    background-color: #00008022;
+    background-color: var(--lighter-gray);
 }
 
 div#container li p {
@@ -94,6 +97,35 @@ div#container li p:first-child {
     color: navy;
 }
 
+button {
+    background-color: white;
+    font-family: "grace-covered";
+    outline: none;
+    border: none;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+div#add-container {
+    position: fixed;
+    left: 0;
+    bottom: var(--footer-height);
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: var(--add-btn-height);
+    margin-bottom: var(--add-btn-margin);
+}
+
+div#add-container button#add {
+    display: grid;
+    place-items: center;
+    content: url("./icons/add_FILL1_wght400_GRAD0_opsz24.svg");
+    background-color: var(--light-gray);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+}
+
 footer {
     position: fixed;
     display: flex;
@@ -105,12 +137,6 @@ footer {
 
 footer > button {
     flex: 1;
-    background-color: white;
-    font-family: "grace-covered";
-    font-size: 1.5rem;
-    outline: none;
-    border: none;
-    text-align: center;
     box-shadow: inset 2px 2px 3px black;
 }
 
