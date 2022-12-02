@@ -1,7 +1,16 @@
 import "./style.css";
 
 const appBody = document.getElementById("app-body");
-const mainContainer = document.getElementById("container");
+const mainContainer = document.createElement("div");
+mainContainer.setAttribute("id", "container");
+
+const projectsTab = document.querySelector("button#projects");
+projectsTab.onclick = renderProjects;
+
+const tasksTab = document.querySelector("button#tasks");
+tasksTab.onclick = renderTasks;
+
+const tabs = [projectsTab, tasksTab];
 
 const Task = function(title, description, dueDate, priority) {
     const pending = true;
@@ -62,5 +71,27 @@ const contentGenerator = (function() {
     return {prependHeader, appendProjectList};
 })();
 
-contentGenerator.prependHeader(appBody, "PROJECTS");
-contentGenerator.appendProjectList(mainContainer, projects);
+function appenContainerToBody() {
+    appBody.appendChild(mainContainer);
+}
+
+function clearAppBody() {
+    appBody.innerHTML = "";
+    mainContainer.innerHTML = "";
+    appenContainerToBody();
+}
+
+function renderProjects() {
+    tabs.forEach(tab => tab.classList.remove("active"));
+    this.classList.add("active");
+    clearAppBody();
+    contentGenerator.prependHeader(appBody, "PROJECTS");
+    contentGenerator.appendProjectList(mainContainer, projects);
+}
+
+function renderTasks() {
+    tabs.forEach(tab => tab.classList.remove("active"));
+    this.classList.add("active");
+    clearAppBody();
+    contentGenerator.prependHeader(appBody, "TASKS");
+}
