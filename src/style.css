@@ -10,7 +10,7 @@
 
     --header-height: max(10vh, 60px);
     --footer-height: clamp(40px, 8vh, 60px);
-    --add-btn-height: clamp(40px, 8vh, 60px);
+    --add-btn-height: clamp(40px, 8vh, 55px);
     --add-btn-margin: 1rem;
 
     --bradius: 1rem;
@@ -22,6 +22,8 @@
 }
 
 body {
+    position: relative;
+    background-color: white;
     justify-content: stretch;
     font-family: "grace-covered";
     margin: 0;
@@ -86,6 +88,10 @@ div#container ul li:nth-child(odd) {
     background-color: var(--lighter-gray);
 }
 
+div#container ul li:nth-child(even) {
+    background-color: white;
+}
+
 div#container li p {
     font-size: 1.2rem;
     color: var(--dark-gray);
@@ -103,6 +109,11 @@ div#container li p.empty-task {
 }
 
 button {
+    /* For compatibilit with Safari */
+    -webkit-apperance: none;
+    margin: 0;
+    padding: 0;
+
     background-color: white;
     font-family: "grace-covered";
     outline: none;
@@ -127,13 +138,19 @@ div#add-container button#add {
     place-items: center;
     content: url("./icons/add_FILL1_wght400_GRAD0_opsz24.svg");
     background-color: var(--light-gray);
-    aspect-ratio: 1 / 1;
+    width: var(--add-btn-height);
+    height: var(--add-btn-height);
     border-radius: 50%;
     border: 1px solid var(--light-gray);
     box-shadow: 2px 2px 2px white,
         2px -2px 2px white,
         -2px 2px 2px white,
         -2px -2px 2px white;
+}
+
+div#add-container button#add > img {
+    width: calc(0.7*var(--add-btn-height));
+    height: calc(0.7*var(--add-btn-height));
 }
 
 div#add-container button#add:active {
