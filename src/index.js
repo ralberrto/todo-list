@@ -2,8 +2,14 @@ import "./style.css";
 import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
-    const pending = true;
-    return {title, description, dueDate, priority, pending};
+    const done = true;
+    const isDone = function() {
+        return done;
+    }
+    const switchDone = function() {
+        done = !done;
+    }
+    return {title, description, dueDate, priority, isDone, switchDone};
 };
 
 const Project = function(name, description) {
@@ -36,31 +42,35 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        contentGenerator.prependHeader(_appBody, "PROJECTS");
-        contentGenerator.appendProjectList(_mainContainer, projects);
+        const header = DOMContentGenerator.header("PROJECTS");
+        _appBody.prepend(header);
+
+        const projectList = DOMContentGenerator.projectList(projects);
+        _mainContainer.append(projectList);
     };
 
     const renderTasks = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        contentGenerator.prependHeader(_appBody, "TASKS");
+        const header = DOMContentGenerator.header("TASKS");
+        _appBody.prepend(header);
     };
 
     return {renderProjects, renderTasks};
 })();
 
-const contentGenerator = (function() {
-    const prependHeader = function(target, headerText) {
+const DOMContentGenerator = (function() {
+    const header = function(headerText) {
         const header = document.createElement("div");
         const titleText = document.createElement("p");
         header.appendChild(titleText);
         titleText.classList.add("header");
         titleText.textContent = headerText;
-        target.prepend(header);
+        return header;
     };
     
-    const appendProjectList = function(target, projects) {
+    const projectList = function(projects) {
         let list = document.createElement("ul");
         for (let project of projects) {
             let item = document.createElement("li");
@@ -73,12 +83,11 @@ const contentGenerator = (function() {
             let projectDescription = document.createElement("p");
             projectDescription.textContent = project.description;
             item.appendChild(projectDescription);
-
-            target.appendChild(list);
         }
+        return list;
     };
 
-    return {prependHeader, appendProjectList};
+    return {header, projectList};
 })();
 
 const gettingStarted = Project(
@@ -89,7 +98,8 @@ const gettingStarted = Project(
 gettingStarted.addTask(Task(
     "Add your projects",
     "Explore the functionality that My Todo List offers you",
-    new Date()
+    new Date(),
+    5
 ))
 
 const projects = [
