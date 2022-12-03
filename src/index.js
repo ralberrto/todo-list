@@ -178,4 +178,4 @@ addIcon.src = addSrc;
 addBtn.appendChild(addIcon);
 
 let activeProjectIndex = 0;
-displayController.renderProjects.call(projectsTab);
+displayController.renderTasks.call(tasksTab);
