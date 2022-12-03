@@ -54,15 +54,16 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        const header = DOMContentGenerator.header("TASKS");
+        const header = DOMContentGenerator.header(projects[activeProjectIndex].name);
         _appBody.prepend(header);
-        let taskList = DOMContentGenerator.taskList(projects);
+        let taskList = DOMContentGenerator.taskList(projects[activeProjectIndex]);
         _mainContainer.appendChild(taskList);
     };
 
     const renderProjectTasks = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         tasksTab.classList.add("active");
+        activeProjectIndex = Number(this.getAttribute("index").substring(1));
         _clearAppBody();
         const index = this.getAttribute("index").substring(1);
         const project = projects[index];
@@ -106,38 +107,20 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    const taskList = function(projects) {
+    const taskList = function(project) {
         let list = document.createElement("ul");
-        if (projects instanceof Array) {
-            projects.forEach(project => {
-                project.tasks.forEach(task => {
-                    let item = document.createElement("li");
-                    list.appendChild(item);
+        project.tasks.forEach(task => {
+            let item = document.createElement("li");
+            list.appendChild(item);
 
-                    let taskName = document.createElement("p");
-                    taskName.textContent = task.title;
-                    item.appendChild(taskName);
+            let taskName = document.createElement("p");
+            taskName.textContent = task.title;
+            item.appendChild(taskName);
 
-                    let taskDescription = document.createElement("p");
-                    taskDescription.textContent = task.description;
-                    item.appendChild(taskDescription);
-                });
-            });
-        }
-        else {
-            projects.tasks.forEach(task => {
-                let item = document.createElement("li");
-                list.appendChild(item);
-
-                let taskName = document.createElement("p");
-                taskName.textContent = task.title;
-                item.appendChild(taskName);
-
-                let taskDescription = document.createElement("p");
-                taskDescription.textContent = task.description;
-                item.appendChild(taskDescription);
-            });
-        }
+            let taskDescription = document.createElement("p");
+            taskDescription.textContent = task.description;
+            item.appendChild(taskDescription);
+        });
         return list;
     }
 
@@ -194,4 +177,5 @@ const addIcon = new Image();
 addIcon.src = addSrc;
 addBtn.appendChild(addIcon);
 
+let activeProjectIndex = 0;
 displayController.renderProjects.call(projectsTab);
