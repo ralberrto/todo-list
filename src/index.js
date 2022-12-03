@@ -46,7 +46,7 @@ const displayController = (function() {
         const header = DOMContentGenerator.header("PROJECTS");
         _appBody.prepend(header);
 
-        const projectList = DOMContentGenerator.projectList(projects);
+        const projectList = DOMContentGenerator.projectList(State.projects);
         _mainContainer.append(projectList);
     };
 
@@ -54,9 +54,9 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        const header = DOMContentGenerator.header(projects[activeProjectIndex].name);
+        const header = DOMContentGenerator.header(State.projects[activeProjectIndex].name);
         _appBody.prepend(header);
-        let taskList = DOMContentGenerator.taskList(projects[activeProjectIndex]);
+        let taskList = DOMContentGenerator.taskList(State.projects[activeProjectIndex]);
         _mainContainer.appendChild(taskList);
     };
 
@@ -66,7 +66,7 @@ const displayController = (function() {
         activeProjectIndex = Number(this.getAttribute("index").substring(1));
         _clearAppBody();
         const index = this.getAttribute("index").substring(1);
-        const project = projects[index];
+        const project = State.projects[index];
 
         let taskList  = DOMContentGenerator.taskList(project);
         _mainContainer.appendChild(taskList);
@@ -127,42 +127,49 @@ const DOMContentGenerator = (function() {
     return {header, projectList, taskList};
 })();
 
-const gettingStarted = Project(
-    "Getting Started",
-    "Learn the features that My List App puts in your hand, it's simple!"
-);
-gettingStarted.addTask(Task(
-    "Add your projects",
-    "Explore the functionality that My Todo List offers you",
-    new Date(),
-    5
-));
-gettingStarted.addTask(Task(
-    "Add tasks to your projects",
-    "Now that you have projects added, add tasks to them and get to work!"
-));
+const State = (function() {
+    const projects = [];
 
-const agency = Project(
-    "Agency",
-    "Start up freelance consultant agency"
-);
-agency.addTask(Task(
-    "Set meeting",
-    "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333."
-));
-agency.addTask(Task(
-    "Make transaction",
-    "Pay consultant the audience. Account number: 4421 2342 2321 2929"
-))
-
-const projects = [
-    gettingStarted,
-    agency,
-    Project(
+    const gettingStarted = Project(
+        "Getting Started",
+        "Learn the features that My List App puts in your hand, it's simple!"
+    );
+    gettingStarted.addTask(Task(
+        "Add your projects",
+        "Explore the functionality that My Todo List offers you",
+        new Date(),
+        5
+    ));
+    gettingStarted.addTask(Task(
+        "Add tasks to your projects",
+        "Now that you have projects added, add tasks to them and get to work!"
+    ));
+    
+    const agency = Project(
+        "Agency",
+        "Start up freelance consultant agency"
+    );
+    agency.addTask(Task(
+        "Set meeting",
+        "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333."
+    ));
+    agency.addTask(Task(
+        "Make transaction",
+        "Pay consultant the audience. Account number: 4421 2342 2321 2929"
+    ));
+    const garden = Project(
         "Garden",
         "Make functional hydroponics garden"
-    )
-];
+    );
+
+    [gettingStarted, agency, garden].forEach(project => projects.push(project));
+
+    const addProject = function(project) {
+        projects.push(project);
+    }
+    
+    return {projects, addProject};
+})();
 
 const projectsTab = document.querySelector("button#projects");
 projectsTab.onclick = displayController.renderProjects;
