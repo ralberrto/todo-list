@@ -66,8 +66,7 @@ const displayController = (function() {
         const activeProjectIndex = Number(this.getAttribute("index").substring(1));
         State.setActiveProject(activeProjectIndex);
         _clearAppBody();
-        const index = this.getAttribute("index").substring(1);
-        const project = State.projects[index];
+        const project = State.getActiveProject();
 
         let taskList  = DOMContentGenerator.taskList(project);
         _mainContainer.appendChild(taskList);
@@ -110,18 +109,29 @@ const DOMContentGenerator = (function() {
 
     const taskList = function(project) {
         let list = document.createElement("ul");
-        project.tasks.forEach(task => {
-            let item = document.createElement("li");
+        if (project.tasks.length === 0) {
+            const item = document.createElement("li");
             list.appendChild(item);
 
-            let taskName = document.createElement("p");
-            taskName.textContent = task.title;
-            item.appendChild(taskName);
+            const noTaskElement = document.createElement("p");
+            noTaskElement.textContent = "No tasks have been added";
+            noTaskElement.classList.add("empty-task");
+            item.appendChild(noTaskElement);
+        }
+        else {
+            project.tasks.forEach(task => {
+                let item = document.createElement("li");
+                list.appendChild(item);
 
-            let taskDescription = document.createElement("p");
-            taskDescription.textContent = task.description;
-            item.appendChild(taskDescription);
-        });
+                let taskName = document.createElement("p");
+                taskName.textContent = task.title;
+                item.appendChild(taskName);
+
+                let taskDescription = document.createElement("p");
+                taskDescription.textContent = task.description;
+                item.appendChild(taskDescription);
+            });
+        }
         return list;
     }
 

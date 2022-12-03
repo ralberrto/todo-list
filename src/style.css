@@ -97,6 +97,11 @@ div#container li p:first-child {
     color: navy;
 }
 
+div#container li p.empty-task {
+    color: var(--light-gray);
+    text-align: center;
+}
+
 button {
     background-color: white;
     font-family: "grace-covered";
