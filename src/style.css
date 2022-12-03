@@ -43,7 +43,7 @@ header {
 
 div#app-body {
     padding: 1rem;
-    margin-bottom: calc(var(--footer-height) + var(--add-btn-height) + var(--add-btn-margin));
+    padding-bottom: calc(var(--footer-height) + var(--add-btn-height) + 2*var(--add-btn-margin));
 }
 
 div#app-body .header {
@@ -114,7 +114,7 @@ div#add-container {
     justify-content: center;
     width: 100vw;
     height: var(--add-btn-height);
-    margin-bottom: var(--add-btn-margin);
+    margin: var(--add-btn-margin) 0;
 }
 
 div#add-container button#add {
@@ -148,5 +148,6 @@ footer > button {
 
 footer > button.active {
     font-size: 1.8rem;
-    box-shadow: 2px -2px 3px black;
+    box-shadow: 2px -2px 3px black,
+        -2px -2px 3px black;
 }

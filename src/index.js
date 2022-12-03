@@ -132,8 +132,12 @@ const agency = Project(
 );
 agency.addTask(Task(
     "Set meeting",
-    "Set meeting with Marco Omar Duarte, the consultant. Tel: 33 3333 3333."
+    "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333."
 ));
+agency.addTask(Task(
+    "Make transaction",
+    "Pay consultant the audience. Account number: 4421 2342 2321 2929"
+))
 
 const projects = [
     gettingStarted,
