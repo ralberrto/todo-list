@@ -55,6 +55,8 @@ const displayController = (function() {
         _clearAppBody();
         const header = DOMContentGenerator.header("TASKS");
         _appBody.prepend(header);
+        let taskList = DOMContentGenerator.taskList(projects);
+        _mainContainer.appendChild(taskList);
     };
 
     return {renderProjects, renderTasks};
@@ -87,27 +89,55 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    return {header, projectList};
+    const taskList = function(projects) {
+        let list = document.createElement("ul");
+        for (let project of projects) {
+            for (let task of project.tasks) {
+                let item = document.createElement("li");
+                list.appendChild(item);
+
+                let taskName = document.createElement("p");
+                taskName.textContent = task.title;
+                item.appendChild(taskName);
+
+                let taskDescription = document.createElement("p");
+                taskDescription.textContent = task.description;
+                item.appendChild(taskDescription);
+            }
+        }
+        return list;
+    }
+
+    return {header, projectList, taskList};
 })();
 
 const gettingStarted = Project(
     "Getting Started",
     "Learn the features that My List App puts in your hand, it's simple!"
 );
-
 gettingStarted.addTask(Task(
     "Add your projects",
     "Explore the functionality that My Todo List offers you",
     new Date(),
     5
-))
+));
+gettingStarted.addTask(Task(
+    "Add tasks to your projects",
+    "Now that you have projects added, add tasks to them and get to work!"
+));
+
+const agency = Project(
+    "Agency",
+    "Start up freelance consultant agency"
+);
+agency.addTask(Task(
+    "Set meeting",
+    "Set meeting with Marco Omar Duarte, the consultant. Tel: 33 3333 3333."
+));
 
 const projects = [
     gettingStarted,
-    Project(
-        "Agency",
-        "Start up freelance consultant agency"
-    ),
+    agency,
     Project(
         "Garden",
         "Make functional hydroponics garden"
