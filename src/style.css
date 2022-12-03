@@ -125,6 +125,10 @@ div#add-container button#add {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     border: 1px solid var(--light-gray);
+    box-shadow: 2px 2px 2px white,
+        2px -2px 2px white,
+        -2px 2px 2px white,
+        -2px -2px 2px white;
 }
 
 div#add-container button#add:active {

@@ -60,7 +60,21 @@ const displayController = (function() {
         _mainContainer.appendChild(taskList);
     };
 
-    return {renderProjects, renderTasks};
+    const renderProjectTasks = function() {
+        tabs.forEach(tab => tab.classList.remove("active"));
+        tasksTab.classList.add("active");
+        _clearAppBody();
+        const index = this.getAttribute("index").substring(1);
+        const project = projects[index];
+
+        let taskList  = DOMContentGenerator.taskList(project);
+        _mainContainer.appendChild(taskList);
+
+        const header = DOMContentGenerator.header(project.name);
+        _appBody.prepend(header);
+    };
+
+    return {renderProjects, renderTasks, renderProjectTasks};
 })();
 
 const DOMContentGenerator = (function() {
@@ -75,8 +89,10 @@ const DOMContentGenerator = (function() {
     
     const projectList = function(projects) {
         let list = document.createElement("ul");
-        for (let project of projects) {
+        projects.forEach((project, index) => {
             let item = document.createElement("li");
+            item.setAttribute("index", `i${index}`)
+            item.onclick = displayController.renderProjectTasks;
             list.appendChild(item);
 
             let projectName = document.createElement("p");
@@ -86,14 +102,30 @@ const DOMContentGenerator = (function() {
             let projectDescription = document.createElement("p");
             projectDescription.textContent = project.description;
             item.appendChild(projectDescription);
-        }
+        });
         return list;
     };
 
     const taskList = function(projects) {
         let list = document.createElement("ul");
-        for (let project of projects) {
-            for (let task of project.tasks) {
+        if (projects instanceof Array) {
+            projects.forEach(project => {
+                project.tasks.forEach(task => {
+                    let item = document.createElement("li");
+                    list.appendChild(item);
+
+                    let taskName = document.createElement("p");
+                    taskName.textContent = task.title;
+                    item.appendChild(taskName);
+
+                    let taskDescription = document.createElement("p");
+                    taskDescription.textContent = task.description;
+                    item.appendChild(taskDescription);
+                });
+            });
+        }
+        else {
+            projects.tasks.forEach(task => {
                 let item = document.createElement("li");
                 list.appendChild(item);
 
@@ -104,7 +136,7 @@ const DOMContentGenerator = (function() {
                 let taskDescription = document.createElement("p");
                 taskDescription.textContent = task.description;
                 item.appendChild(taskDescription);
-            }
+            });
         }
         return list;
     }
