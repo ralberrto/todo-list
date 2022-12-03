@@ -54,16 +54,17 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        const header = DOMContentGenerator.header(State.projects[activeProjectIndex].name);
+        const header = DOMContentGenerator.header(State.getActiveProject().name);
         _appBody.prepend(header);
-        let taskList = DOMContentGenerator.taskList(State.projects[activeProjectIndex]);
+        let taskList = DOMContentGenerator.taskList(State.getActiveProject());
         _mainContainer.appendChild(taskList);
     };
 
     const renderProjectTasks = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         tasksTab.classList.add("active");
-        activeProjectIndex = Number(this.getAttribute("index").substring(1));
+        const activeProjectIndex = Number(this.getAttribute("index").substring(1));
+        State.setActiveProject(activeProjectIndex);
         _clearAppBody();
         const index = this.getAttribute("index").substring(1);
         const project = State.projects[index];
@@ -128,6 +129,16 @@ const DOMContentGenerator = (function() {
 })();
 
 const State = (function() {
+    let _activeProjectIndex = 0;
+
+    const setActiveProject = function(index) {
+        _activeProjectIndex = index;
+    };
+    
+    const getActiveProject = function() {
+        return projects[_activeProjectIndex];
+    }
+
     const projects = [];
 
     const gettingStarted = Project(
@@ -168,7 +179,7 @@ const State = (function() {
         projects.push(project);
     }
     
-    return {projects, addProject};
+    return {projects, addProject, setActiveProject, getActiveProject};
 })();
 
 const projectsTab = document.querySelector("button#projects");
@@ -184,5 +195,4 @@ const addIcon = new Image();
 addIcon.src = addSrc;
 addBtn.appendChild(addIcon);
 
-let activeProjectIndex = 0;
 displayController.renderTasks.call(tasksTab);
