@@ -29,6 +29,7 @@ const displayController = (function() {
     _mainContainer.setAttribute("id", "container");
 
     const _clearAppBody = function() {
+        window.scrollTo(0, 0);
         _appBody.innerHTML = "";
         _mainContainer.innerHTML = "";
         _appendContainerToBody();
