@@ -28,6 +28,19 @@ const displayController = (function() {
     const _mainContainer = document.createElement("div");
     _mainContainer.setAttribute("id", "container");
 
+    const projectsTab = document.querySelector("button#projects");
+    const tasksTab = document.querySelector("button#tasks");
+    const tabs = [projectsTab, tasksTab];
+
+    const addBtn = document.querySelector("button#add");
+    const addIcon = new Image();
+    addIcon.src = addSrc;
+    addBtn.appendChild(addIcon);
+
+    const loadPage = function() {
+        renderTasks.call(tasksTab);
+    };
+
     const _clearAppBody = function() {
         window.scrollTo(0, 0);
         _appBody.innerHTML = "";
@@ -74,8 +87,11 @@ const displayController = (function() {
         const header = DOMContentGenerator.header(project.name);
         _appBody.prepend(header);
     };
+    
+    projectsTab.onclick = renderProjects;
+    tasksTab.onclick = renderTasks;
 
-    return {renderProjects, renderTasks, renderProjectTasks};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks};
 })();
 
 const DOMContentGenerator = (function() {
@@ -192,17 +208,4 @@ const State = (function() {
     return {projects, addProject, setActiveProject, getActiveProject};
 })();
 
-const projectsTab = document.querySelector("button#projects");
-projectsTab.onclick = displayController.renderProjects;
-
-const tasksTab = document.querySelector("button#tasks");
-tasksTab.onclick = displayController.renderTasks;
-
-const tabs = [projectsTab, tasksTab];
-
-const addBtn = document.querySelector("button#add");
-const addIcon = new Image();
-addIcon.src = addSrc;
-addBtn.appendChild(addIcon);
-
-displayController.renderTasks.call(tasksTab);
+displayController.loadPage();
