@@ -7,6 +7,12 @@
     --light-gray: #cccccc;
     --dark-gray: #777777;
     --lighter-gray: #eeeeee;
+    --mustard: #CA8A04;
+
+    --fixed-ui-elements: white;
+    --fixed-ui-color: black;
+    --bg-color: var(--light-gray);
+    --header-color: black;
 
     --header-height: max(10vh, 60px);
     --footer-height: clamp(40px, 8vh, 60px);
@@ -28,6 +34,7 @@ body {
     font-family: "grace-covered";
     margin: 0;
     min-height: 100vh;
+    background-color: var(--bg-color);
 }
 
 header {
@@ -40,12 +47,14 @@ header {
     width: 100vw;
     box-shadow: 2px 2px 3px black;
     padding-left: 1rem;
-    background-color: white;
+    background-color: var(--fixed-ui-elements);
+    color: var(--fixed-ui-color);
 }
 
 div#app-body {
     padding: 1rem;
     padding-bottom: calc(var(--footer-height) + var(--add-btn-height) + 2*var(--add-btn-margin));
+    height: 100%;
 }
 
 div#app-body .header {
@@ -53,6 +62,7 @@ div#app-body .header {
     margin: 0;
     margin-top: var(--header-height);
     margin-bottom: 1rem;
+    color: var(--header-color);
 }
 
 div#container {
@@ -170,6 +180,8 @@ footer {
 footer > button {
     flex: 1;
     box-shadow: inset 2px 2px 3px black;
+    background-color: var(--fixed-ui-elements);
+    color: var(--fixed-ui-color);
 }
 
 footer > button.active {
