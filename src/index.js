@@ -1,5 +1,6 @@
 import "./style.css";
 import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
+import calendarSrc from "./icons/calendar_month_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
     const done = true;
@@ -160,18 +161,37 @@ const DOMContentGenerator = (function() {
         const details = document.createElement("div");
         details.classList.add("task-details");
 
+        const dueDateCont = document.createElement("div");
+        dueDateCont.classList.add("due-container");
         const dueDate = document.createElement("p");
-        dueDate.textContent = `${task.dueDate}`;
+        const calendar = new Image();
+        calendar.src = calendarSrc;
+        dueDate.classList.add("due");
+        dueDate.textContent = task.dueDate;
+        dueDateCont.appendChild(calendar);
+        dueDateCont.appendChild(dueDate);
 
+        const priorityCont = document.createElement("div");
+        const priorityTag = document.createElement("p");
+        priorityTag.classList.add("tag");
         const priority = document.createElement("p");
-        priority.textContent = `Priority: ${task.priority}`;
+        priorityTag.textContent = "Priority";
+        priority.textContent = task.priority;
+        priorityCont.appendChild(priorityTag);
+        priorityCont.appendChild(priority);
 
-        const doneRadioBtn = document.createElement("p");
-        doneRadioBtn.textContent = "Complete";
+        const doneContainer = document.createElement("div");
+        const doneTag = document.createElement("p");
+        doneTag.classList.add("tag")
+        doneTag.textContent = "Completion";
+        const done = document.createElement("p");
+        done.textContent = "Done";
+        doneContainer.appendChild(doneTag);
+        doneContainer.appendChild(done);
 
-        details.appendChild(dueDate);
-        details.appendChild(priority);
-        details.appendChild(doneRadioBtn);
+        details.appendChild(dueDateCont);
+        details.appendChild(priorityCont);
+        details.appendChild(doneContainer);
 
         wrapper.appendChild(title);
         wrapper.appendChild(description);

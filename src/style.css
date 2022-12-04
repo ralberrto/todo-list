@@ -96,7 +96,23 @@ div#container ul li {
     margin: 0.5rem, 0;
 }
 
-div#container ul li .task-entry {
+div#container ul li .task-entry .due-container {
+    display: flex;
+    align-items: center;
+}
+
+div#container ul li .task-entry p.due {
+    margin-bottom: 0;
+}
+
+div#container ul li .task-entry img {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+}
+
+div#container ul li .task-entry .tag {
+    color: var(--light-gray);
 }
 
 div#container ul li:nth-child(odd) {
@@ -121,11 +137,13 @@ div#container li p.entry-title {
 div#container li div.task-details {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
 }
 
 div#container li div.task-details p {
     font-size: 0.8em;
     text-align: center;
+    margin: 0;
 }
 
 div#container li p.empty-task {
