@@ -9,10 +9,11 @@
     --lighter-gray: #eeeeee;
     --mustard: #CA8A04;
 
-    --fixed-ui-elements: white;
-    --fixed-ui-color: black;
-    --bg-color: var(--light-gray);
+    --fixed-ui-elements: #64748B;
+    --fixed-ui-color: white;
+    --bg-color: #CBD5E1;
     --header-color: black;
+    --shadow: black;
 
     --header-height: max(10vh, 60px);
     --footer-height: clamp(40px, 8vh, 60px);
@@ -67,7 +68,7 @@ div#app-body .header {
 
 div#container {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    border: var(--bweight) solid var(--light-gray);
+    /* border: var(--bweight) solid var(--light-gray); */
     border-radius: var(--bradius);
 }
 
@@ -90,7 +91,7 @@ div#container ul > li:last-child {
 }
 
 div#container ul li {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     margin: 0.5rem, 0;
 }
 
@@ -147,15 +148,15 @@ div#add-container button#add {
     display: grid;
     place-items: center;
     content: url("./icons/add_FILL1_wght400_GRAD0_opsz24.svg");
-    background-color: var(--light-gray);
+    background-color: var(--fixed-ui-elements);
     width: var(--add-btn-height);
     height: var(--add-btn-height);
     border-radius: 50%;
-    border: 1px solid var(--light-gray);
-    box-shadow: 2px 2px 2px white,
-        2px -2px 2px white,
-        -2px 2px 2px white,
-        -2px -2px 2px white;
+    border: 1px solid var(--fixed-ui-elements);
+    box-shadow: 2px 2px 2px var(--bg-color),
+        2px -2px 2px var(--bg-color),
+        -2px 2px 2px var(--bg-color),
+        -2px -2px 2px var(--bg-color);
 }
 
 div#add-container button#add > img {
@@ -186,6 +187,6 @@ footer > button {
 
 footer > button.active {
     font-size: 1.8rem;
-    box-shadow: 2px -2px 3px black,
-        -2px -2px 3px black;
+    box-shadow: 2px -2px 3px var(--shadow),
+        -2px -2px 3px var(--shadow);
 }
