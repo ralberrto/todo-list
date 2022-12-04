@@ -14,11 +14,20 @@ const Task = function(title, description, dueDate, priority) {
         done = !done;
     };
 
-    const api = {title, description, isDone, switchDone};
+    const _inThisYear = function() {
+        return _dueDate.getYear() === (new Date()).getYear();
+    };
+
+    const api = {title, description, priority, isDone, switchDone};
 
     Object.defineProperties(api, {
         "dueDate": {
-            get() {return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.dateOptions);},
+            get() {
+                if (_inThisYear) {
+                    return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.shortDateOptions);
+                }
+                return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.longDateOptions);
+            },
             set(date) {_dueDate = date;}
         },
     });
@@ -121,11 +130,13 @@ const DOMContentGenerator = (function() {
         projects.forEach((project, index) => {
             let item = document.createElement("li");
             item.setAttribute("index", `i${index}`)
+            item.classList.add("project-entry");
             item.onclick = displayController.renderProjectTasks;
             list.appendChild(item);
 
             let projectName = document.createElement("p");
             projectName.textContent = project.name;
+            projectName.classList.add("entry-title");
             item.appendChild(projectName);
 
             let projectDescription = document.createElement("p");
@@ -135,17 +146,36 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    const taskElement = function(taskTitle, taskDueDate) {
+    const taskElement = function(task) {
         const wrapper = document.createElement("div");
+        wrapper.classList.add("task-entry");
 
         const title = document.createElement("p");
-        title.textContent = taskTitle;
+        title.classList.add("entry-title");
+        title.textContent = task.title;
 
         const description = document.createElement("p");
-        description.textContent = taskDueDate;
+        description.textContent = task.description;
+
+        const details = document.createElement("div");
+        details.classList.add("task-details");
+
+        const dueDate = document.createElement("p");
+        dueDate.textContent = `${task.dueDate}`;
+
+        const priority = document.createElement("p");
+        priority.textContent = `Priority: ${task.priority}`;
+
+        const doneRadioBtn = document.createElement("p");
+        doneRadioBtn.textContent = "Complete";
+
+        details.appendChild(dueDate);
+        details.appendChild(priority);
+        details.appendChild(doneRadioBtn);
 
         wrapper.appendChild(title);
         wrapper.appendChild(description);
+        wrapper.appendChild(details);
         
         return wrapper;
     };
@@ -164,7 +194,7 @@ const DOMContentGenerator = (function() {
         else {
             project.tasks.forEach(task => {
                 let item = document.createElement("li");
-                item.appendChild(taskElement(task.title, task.dueDate));
+                item.appendChild(taskElement(task));
 
                 list.appendChild(item);
             });
@@ -188,12 +218,13 @@ const State = (function() {
         "Add your projects",
         "Explore the functionality that My Todo List offers you",
         new Date(),
-        5
+        "High"
     ));
     gettingStarted.addTask(Task(
         "Add tasks to your projects",
         "Now that you have projects added, add tasks to them and get to work!",
         new Date(),
+        "High"
     ));
     
     const agency = Project(
@@ -203,12 +234,14 @@ const State = (function() {
     agency.addTask(Task(
         "Set meeting",
         "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333.",
-        new Date()
+        new Date(),
+        "High"
     ));
     agency.addTask(Task(
         "Make transaction",
         "Pay consultant the audience. Account number: 4421 2342 2321 2929",
-        new Date()
+        new Date(),
+        "Medium"
     ));
 
     const garden = Project(
@@ -244,12 +277,18 @@ const State = (function() {
 })();
 
 const LocaleConfig = (function() {
-    let _locale = "en-GB";
+    let _locale = undefined;//"en-GB";
 
-    const _dateOptions = {
+    const _longDateOptions = {
         "year": "numeric",
-        "month": "long",
+        "month": "short",
         "weekday": "short",
+        "day": "numeric"
+    };
+
+    const _shortDateOptions = {
+        "month": "short",
+        "weekday": "long",
         "day": "numeric"
     };
 
@@ -260,8 +299,11 @@ const LocaleConfig = (function() {
             get() {return _locale;},
             set(tag) {_locale = tag;}
         },
-        "dateOptions": {
-            get() {return _dateOptions;},
+        "shortDateOptions": {
+            get() {return _shortDateOptions;},
+        },
+        "longDateOptions": {
+            get() {return _longDateOptions;}
         }
     });
         

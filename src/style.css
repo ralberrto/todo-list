@@ -6,13 +6,14 @@
 :root {
     --light-gray: #cccccc;
     --dark-gray: #777777;
-    --lighter-gray: #eeeeee;
+    --lighter-gray: #F1F5F9;
     --mustard: #CA8A04;
+    --blue: #1E293B;
 
     --fixed-ui-elements: #64748B;
     --fixed-ui-color: white;
     --bg-color: #CBD5E1;
-    --header-color: black;
+    --header-color: var(--blue);
     --shadow: black;
 
     --header-height: max(10vh, 60px);
@@ -95,6 +96,9 @@ div#container ul li {
     margin: 0.5rem, 0;
 }
 
+div#container ul li .task-entry {
+}
+
 div#container ul li:nth-child(odd) {
     background-color: var(--lighter-gray);
 }
@@ -104,19 +108,33 @@ div#container ul li:nth-child(even) {
 }
 
 div#container li p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--dark-gray);
 }
 
-div#container li p:first-child {
-    font-size: 1.5rem;
+div#container li p.entry-title {
+    font-size: 1.3rem;
     font-weight: bold;
     color: navy;
+}
+
+div#container li div.task-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+div#container li div.task-details p {
+    font-size: 0.8em;
+    text-align: center;
 }
 
 div#container li p.empty-task {
     color: var(--light-gray);
     text-align: center;
+}
+
+div#container li div.details {
+    display: flex;
 }
 
 button {
