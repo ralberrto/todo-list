@@ -3,13 +3,27 @@ import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
     const done = true;
+
+    let _dueDate = dueDate; 
+
     const isDone = function() {
         return done;
-    }
+    };
+
     const switchDone = function() {
         done = !done;
-    }
-    return {title, description, dueDate, priority, isDone, switchDone};
+    };
+
+    const api = {title, description, isDone, switchDone};
+
+    Object.defineProperties(api, {
+        "dueDate": {
+            get() {return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.dateOptions);},
+            set(date) {_dueDate = date;}
+        },
+    });
+
+    return api;
 };
 
 const Project = function(name, description) {
@@ -21,8 +35,6 @@ const Project = function(name, description) {
 };
 
 const displayController = (function() {
-    const _body = document.body;
-
     const _appBody = document.getElementById("app-body");
 
     const _mainContainer = document.createElement("div");
@@ -123,6 +135,21 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
+    const taskElement = function(taskTitle, taskDueDate) {
+        const wrapper = document.createElement("div");
+
+        const title = document.createElement("p");
+        title.textContent = taskTitle;
+
+        const description = document.createElement("p");
+        description.textContent = taskDueDate;
+
+        wrapper.appendChild(title);
+        wrapper.appendChild(description);
+        
+        return wrapper;
+    };
+
     const taskList = function(project) {
         let list = document.createElement("ul");
         if (project.tasks.length === 0) {
@@ -137,19 +164,13 @@ const DOMContentGenerator = (function() {
         else {
             project.tasks.forEach(task => {
                 let item = document.createElement("li");
+                item.appendChild(taskElement(task.title, task.dueDate));
+
                 list.appendChild(item);
-
-                let taskName = document.createElement("p");
-                taskName.textContent = task.title;
-                item.appendChild(taskName);
-
-                let taskDescription = document.createElement("p");
-                taskDescription.textContent = task.description;
-                item.appendChild(taskDescription);
             });
         }
         return list;
-    }
+    };
 
     return {header, projectList, taskList};
 })();
@@ -171,7 +192,8 @@ const State = (function() {
     ));
     gettingStarted.addTask(Task(
         "Add tasks to your projects",
-        "Now that you have projects added, add tasks to them and get to work!"
+        "Now that you have projects added, add tasks to them and get to work!",
+        new Date(),
     ));
     
     const agency = Project(
@@ -180,12 +202,15 @@ const State = (function() {
     );
     agency.addTask(Task(
         "Set meeting",
-        "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333."
+        "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333.",
+        new Date()
     ));
     agency.addTask(Task(
         "Make transaction",
-        "Pay consultant the audience. Account number: 4421 2342 2321 2929"
+        "Pay consultant the audience. Account number: 4421 2342 2321 2929",
+        new Date()
     ));
+
     const garden = Project(
         "Garden",
         "Make functional hydroponics garden"
@@ -209,6 +234,37 @@ const State = (function() {
         }
     });
 
+    Object.defineProperty(api, "dateOptions", {
+        get() {
+            return _dateOptions;
+        }
+    });
+
+    return api;
+})();
+
+const LocaleConfig = (function() {
+    let _locale = "en-GB";
+
+    const _dateOptions = {
+        "year": "numeric",
+        "month": "long",
+        "weekday": "short",
+        "day": "numeric"
+    };
+
+    const api = {};
+
+    Object.defineProperties(api, {
+        "locale": {
+            get() {return _locale;},
+            set(tag) {_locale = tag;}
+        },
+        "dateOptions": {
+            get() {return _dateOptions;},
+        }
+    });
+        
     return api;
 })();
 
