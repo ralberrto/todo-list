@@ -67,9 +67,9 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
         _clearAppBody();
-        const header = DOMContentGenerator.header(State.getActiveProject().name);
+        const header = DOMContentGenerator.header(State.activeProject.name);
         _appBody.prepend(header);
-        let taskList = DOMContentGenerator.taskList(State.getActiveProject());
+        let taskList = DOMContentGenerator.taskList(State.activeProject);
         _mainContainer.appendChild(taskList);
     };
 
@@ -77,9 +77,9 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         tasksTab.classList.add("active");
         const activeProjectIndex = Number(this.getAttribute("index").substring(1));
-        State.setActiveProject(activeProjectIndex);
+        State.activeProject = activeProjectIndex;
         _clearAppBody();
-        const project = State.getActiveProject();
+        const project = State.activeProject;
 
         let taskList  = DOMContentGenerator.taskList(project);
         _mainContainer.appendChild(taskList);
@@ -157,14 +157,6 @@ const DOMContentGenerator = (function() {
 const State = (function() {
     let _activeProjectIndex = 0;
 
-    const setActiveProject = function(index) {
-        _activeProjectIndex = index;
-    };
-    
-    const getActiveProject = function() {
-        return projects[_activeProjectIndex];
-    }
-
     const projects = [];
 
     const gettingStarted = Project(
@@ -205,7 +197,19 @@ const State = (function() {
         projects.push(project);
     }
     
-    return {projects, addProject, setActiveProject, getActiveProject};
+    const api = {projects, addProject};
+
+    Object.defineProperty(api, "activeProject", {
+        get() {
+            return projects[_activeProjectIndex];
+        },
+
+        set(index) {
+            _activeProjectIndex = index;
+        }
+    });
+
+    return api;
 })();
 
 displayController.loadPage();
