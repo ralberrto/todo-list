@@ -127,14 +127,22 @@ div#container ul li .task-entry .value {
 
 div#container ul li .task-entry .value.low {
     background-color: var(--green);
+    border: 1px solid var(--green);
 }
 
 div#container ul li .task-entry .value.medium {
     background-color: var(--yellow);
+    border: 1px solid var(--yellow);
 }
 
 div#container ul li .task-entry .value.high {
     background-color: var(--red);
+    border: 1px solid var(--red);
+}
+
+div#container ul li .task-entry .value:active {
+    box-shadow: inset 1px 1px 1px black,
+        inset -1px 1px 1px black;
 }
 
 div#container ul li .task-entry .value.done {
