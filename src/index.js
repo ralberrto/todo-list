@@ -24,7 +24,7 @@ const Task = function(title, description, dueDate, priority) {
     Object.defineProperties(api, {
         "dueDate": {
             get() {
-                if (_inThisYear) {
+                if (_inThisYear()) {
                     return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.shortDateOptions);
                 }
                 return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.longDateOptions);
@@ -244,7 +244,13 @@ const State = (function() {
         "Add tasks to your projects",
         "Now that you have projects added, add tasks to them and get to work!",
         new Date(),
-        "High"
+        "Medium"
+    ));
+    gettingStarted.addTask(Task(
+        "Get to Work",
+        "All that's left for you to do is get to work to make your dreams come true!",
+        new Date(2023, 0, 2),
+        "Low"
     ));
     
     const agency = Project(

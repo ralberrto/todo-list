@@ -68,7 +68,7 @@ div#app-body .header {
 }
 
 div#container {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     /* border: var(--bweight) solid var(--light-gray); */
     border-radius: var(--bradius);
 }
