@@ -7,19 +7,15 @@ const Task = function(title, description, dueDate, priority) {
 
     let _dueDate = dueDate; 
 
-    const isDone = function() {
-        return done;
-    };
-
-    const switchDone = function() {
-        done = !done;
+    const switchStatus = function() {
+        _done = !_done;
     };
 
     const _inThisYear = function() {
         return _dueDate.getYear() === (new Date()).getYear();
     };
 
-    const api = {title, description, priority, isDone, switchDone};
+    const api = {title, description, priority, switchStatus};
 
     Object.defineProperties(api, {
         "dueDate": {
@@ -31,13 +27,9 @@ const Task = function(title, description, dueDate, priority) {
             },
             set(date) {_dueDate = date;}
         },
-        "doneString": {
+        "done": {
             get() {return _done ? "Done" : "Pending";},
         },
-        "doneBool": {
-            get() {return _done;},
-            set(done) {_done = done;}
-        }
     });
 
     return api;
@@ -69,8 +61,8 @@ const displayController = (function() {
     const switchTaskStatus = function() {
         const taskIndex = Number(this.getAttribute("index"));
         const task = State.activeProject.tasks[taskIndex];
-        task.doneBool = !task.doneBool;
-        this.textContent = task.doneString;
+        task.switchStatus();
+        this.textContent = task.done;
         this.classList.toggle("done");
     };
 
@@ -204,7 +196,7 @@ const DOMContentGenerator = (function() {
         doneTag.classList.add("tag")
         doneTag.textContent = "Completion";
         const done = document.createElement("p");
-        done.textContent = task.doneString;
+        done.textContent = task.done;
         done.classList.add("value");
         done.setAttribute("index", taskIndex);
         done.onclick = displayController.switchTaskStatus;
