@@ -137,6 +137,14 @@ div#container ul li .task-entry .value.high {
     background-color: var(--red);
 }
 
+div#container ul li .task-entry .value.done {
+    background-color: var(--green);
+}
+
+div#cotainer ul li .task-entry .value.done::before {
+    content: "✔";
+}
+
 div#container ul li:nth-child(odd) {
     background-color: var(--lighter-gray);
 }

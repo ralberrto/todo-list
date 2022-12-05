@@ -31,14 +31,13 @@ const Task = function(title, description, dueDate, priority) {
             },
             set(date) {_dueDate = date;}
         },
-        "done": {
-            get() {
-                return _done ? "Done" : "Pending";
-            },
-            set(done) {
-                _done = done;
-            }
+        "doneString": {
+            get() {return _done ? "Done" : "Pending";},
         },
+        "doneBool": {
+            get() {return _done;},
+            set(done) {_done = done;}
+        }
     });
 
     return api;
@@ -66,6 +65,14 @@ const displayController = (function() {
     const addIcon = new Image();
     addIcon.src = addSrc;
     addBtn.appendChild(addIcon);
+
+    const switchTaskStatus = function() {
+        const taskIndex = Number(this.getAttribute("index"));
+        const task = State.activeProject.tasks[taskIndex];
+        task.doneBool = !task.doneBool;
+        this.textContent = task.doneString;
+        this.classList.toggle("done");
+    };
 
     const loadPage = function() {
         renderTasks.call(tasksTab);
@@ -121,7 +128,7 @@ const displayController = (function() {
     projectsTab.onclick = renderProjects;
     tasksTab.onclick = renderTasks;
 
-    return {loadPage, renderProjects, renderTasks, renderProjectTasks};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus};
 })();
 
 const DOMContentGenerator = (function() {
@@ -156,6 +163,8 @@ const DOMContentGenerator = (function() {
     };
 
     const taskElement = function(task) {
+        const taskIndex = State.activeProject.tasks.indexOf(task);
+
         const wrapper = document.createElement("div");
         wrapper.classList.add("task-entry");
 
@@ -195,8 +204,10 @@ const DOMContentGenerator = (function() {
         doneTag.classList.add("tag")
         doneTag.textContent = "Completion";
         const done = document.createElement("p");
-        done.textContent = task.done;
+        done.textContent = task.doneString;
         done.classList.add("value");
+        done.setAttribute("index", taskIndex);
+        done.onclick = displayController.switchTaskStatus;
         doneContainer.appendChild(doneTag);
         doneContainer.appendChild(done);
 
