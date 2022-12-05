@@ -141,8 +141,9 @@ div#container ul li .task-entry .value.done {
     background-color: var(--green);
 }
 
-div#cotainer ul li .task-entry .value.done::before {
+div#container ul li .task-entry .value.done::after {
     content: "✔";
+    margin-left: 0.5rem;
 }
 
 div#container ul li:nth-child(odd) {
