@@ -9,6 +9,9 @@
     --lighter-gray: #F1F5F9;
     --mustard: #CA8A04;
     --blue: #1E293B;
+    --red: #FDA4AF;
+    --green: #86EFAC;
+    --yellow: #FDE047;
 
     --fixed-ui-elements: #64748B;
     --fixed-ui-color: white;
@@ -113,6 +116,25 @@ div#container ul li .task-entry img {
 
 div#container ul li .task-entry .tag {
     color: var(--light-gray);
+}
+
+div#container ul li .task-entry .value {
+    padding: 0.5rem;
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    min-width: 4.5rem;
+}
+
+div#container ul li .task-entry .value.low {
+    background-color: var(--green);
+}
+
+div#container ul li .task-entry .value.medium {
+    background-color: var(--yellow);
+}
+
+div#container ul li .task-entry .value.high {
+    background-color: var(--red);
 }
 
 div#container ul li:nth-child(odd) {

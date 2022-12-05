@@ -3,7 +3,7 @@ import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
 import calendarSrc from "./icons/calendar_month_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
-    const done = true;
+    let _done = false;
 
     let _dueDate = dueDate; 
 
@@ -30,6 +30,14 @@ const Task = function(title, description, dueDate, priority) {
                 return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.longDateOptions);
             },
             set(date) {_dueDate = date;}
+        },
+        "done": {
+            get() {
+                return _done ? "Done" : "Pending";
+            },
+            set(done) {
+                _done = done;
+            }
         },
     });
 
@@ -176,6 +184,8 @@ const DOMContentGenerator = (function() {
         priorityTag.classList.add("tag");
         const priority = document.createElement("p");
         priorityTag.textContent = "Priority";
+        priority.classList.add("value");
+        priority.classList.add(task.priority.toLowerCase());
         priority.textContent = task.priority;
         priorityCont.appendChild(priorityTag);
         priorityCont.appendChild(priority);
@@ -185,7 +195,8 @@ const DOMContentGenerator = (function() {
         doneTag.classList.add("tag")
         doneTag.textContent = "Completion";
         const done = document.createElement("p");
-        done.textContent = "Done";
+        done.textContent = task.done;
+        done.classList.add("value");
         doneContainer.appendChild(doneTag);
         doneContainer.appendChild(done);
 
