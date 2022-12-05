@@ -27,9 +27,12 @@ const Task = function(title, description, dueDate, priority) {
             },
             set(date) {_dueDate = date;}
         },
-        "done": {
+        "doneString": {
             get() {return _done ? "Done" : "Pending";},
         },
+        "done": {
+            get() {return _done;}
+        }
     });
 
     return api;
@@ -62,7 +65,7 @@ const displayController = (function() {
         const taskIndex = Number(this.getAttribute("index"));
         const task = State.activeProject.tasks[taskIndex];
         task.switchStatus();
-        this.textContent = task.done;
+        this.textContent = task.doneString;
         this.classList.toggle("done");
     };
 
@@ -196,9 +199,10 @@ const DOMContentGenerator = (function() {
         doneTag.classList.add("tag")
         doneTag.textContent = "Completion";
         const done = document.createElement("p");
-        done.textContent = task.done;
+        done.textContent = task.doneString;
         done.classList.add("value");
         done.setAttribute("index", taskIndex);
+        if (task.done) {done.classList.add("done")};
         done.onclick = displayController.switchTaskStatus;
         doneContainer.appendChild(doneTag);
         doneContainer.appendChild(done);
