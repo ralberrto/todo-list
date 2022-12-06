@@ -89,19 +89,19 @@ div#container ul {
     margin: 0;
 }
 
-div#container ul > li:first-child {
+div#container > ul > li:first-child {
     --actual-bradius: calc(var(--bradius) - var(--bweight));
     border-top-left-radius: var(--actual-bradius);
     border-top-right-radius: var(--actual-bradius);
 }
 
-div#container ul > li:last-child {
+div#container > ul > li:last-child {
     --actual-bradius: calc(var(--bradius) - var(--bweight));
     border-bottom-left-radius: var(--actual-bradius);
     border-bottom-right-radius: var(--actual-bradius);
 }
 
-div#container ul li {
+div#container > ul > li {
     padding: 0.5rem 1rem;
     margin: 0.5rem, 0;
 }
@@ -121,7 +121,7 @@ div#container .task-entry img {
     margin-right: 0.5rem;
 }
 
-div#container .task-entry .tag {
+div#container .task-entry p.tag {
     color: var(--light-gray);
 }
 
@@ -156,32 +156,40 @@ div#container .task-entry .value.done {
     background-color: var(--green);
 }
 
-div#container .task-entry:nth-child(odd) {
+div#container > ul > li:nth-child(odd), 
+div#container > ul > li:nth-child(odd) input {
     background-color: var(--lighter-gray);
 }
 
-div#container .task-entry:nth-child(even) {
+div#container > ul > li:nth-child(even),
+div#container > ul > li:nth-child(even) input {
     background-color: white;
 }
 
-div#container .task-entry p {
+div#container li p,
+div#container li input[type="text"] {
     font-size: 1.1rem;
+    margin-bottom: 1.1rem;
     color: var(--dark-gray);
+    width: 100%
 }
 
-div#container .task-entry p.entry-title {
+div#container li p.entry-title,
+div#container li input.entry-title {
     font-size: 1.3rem;
+    margin: 1.3rem 0;
     font-weight: bold;
     color: navy;
 }
 
-div#container .task-entry div.task-details {
+div#container .task-entry .task-details {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
-div#container .task-entry div.task-details p {
+div#container .task-entry .task-details p,
+div#container .task-entry .task-details input {
     font-size: 0.8em;
     text-align: center;
     margin: 0;
@@ -192,8 +200,17 @@ div#container .task-entry p.empty-task {
     text-align: center;
 }
 
-div#container .task-entry div.details {
+div#container .task-entry .details {
     display: flex;
+}
+
+input {
+    outline: none;
+    border: none;
+}
+
+input::placeholder {
+    color: var(--light-gray);
 }
 
 button {

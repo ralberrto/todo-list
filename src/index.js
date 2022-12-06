@@ -81,6 +81,10 @@ const displayController = (function() {
     };
 
     const addTask = function() {
+        const taskList = document.getElementById("task-list");
+        taskList.appendChild(DOMContentGenerator.taskInputForm());
+        window.scrollTo(0, document.body.scrollHeight + 100);
+        //addBtn.style.display = "none";
         console.log("You're about to add a task!");
     }
 
@@ -202,7 +206,63 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    const addTaskContent = function(container, task) {
+    const taskInputForm = function() {
+        const taskIndex = State.activeProject.tasks.length;
+
+        const container = document.createElement("li");
+        container.classList.add("task-entry");
+        container.classList.add("task-form")
+
+        const title = document.createElement("input");
+        title.setAttribute("type", "text");
+        title.setAttribute("placeholder", "Title");
+        title.setAttribute("required", "");
+        title.classList.add("entry-title");
+
+        const description = document.createElement("input");
+        description.setAttribute("type", "text");
+        description.setAttribute("placeholder", "Description (optional)");
+
+        const details = document.createElement("ul");
+        details.classList.add("task-details");
+
+        const dueDateCont = document.createElement("li");
+        dueDateCont.classList.add("due-container");
+        const dueDate = document.createElement("input");
+        dueDate.classList.add("due");
+        dueDate.setAttribute("type", "date");
+        dueDate.setAttribute("id", `date${taskIndex}`);
+        dueDate.classList.add("value");
+        const calendarImage = new Image();
+        calendarImage.src = calendarSrc;
+        const dateInputLabel = document.createElement("label");
+        dateInputLabel.setAttribute("for", `date${taskIndex}`);
+        dateInputLabel.appendChild(calendarImage);
+        _appendChildren(dueDateCont, dateInputLabel, dueDate);
+        
+        const priorityCont = document.createElement("li");
+        const priorityTag = document.createElement("p");
+        priorityTag.classList.add("tag");
+        priorityTag.textContent = "Priority";
+        const priority = document.createElement("select");
+        priority.classList.add("value");
+        priority.setAttribute("index", taskIndex);
+        const highOption = document.createElement("option");
+        highOption.textContent = "High";
+        const medOption = document.createElement("option");
+        medOption.textContent = "Medium";
+        const lowOption = document.createElement("option");
+        lowOption.textContent = "Low";
+        _appendChildren(priority, highOption, medOption, lowOption);
+        _appendChildren(priorityCont, priorityTag, priority);
+
+        _appendChildren(details, dueDateCont, priorityCont);
+
+        _appendChildren(container, title, description, details);
+        return container;
+    };
+
+    const _includeTaskContent = function(container, task) {
         const taskIndex = State.activeProject.tasks.indexOf(task);
 
         container.classList.add("task-entry");
@@ -214,10 +274,10 @@ const DOMContentGenerator = (function() {
         const description = document.createElement("p");
         description.textContent = task.description;
 
-        const details = document.createElement("div");
+        const details = document.createElement("ul");
         details.classList.add("task-details");
 
-        const dueDateCont = document.createElement("div");
+        const dueDateCont = document.createElement("li");
         const dueDate = document.createElement("p");
         const calendar = new Image();
         dueDateCont.classList.add("due-container");
@@ -226,7 +286,7 @@ const DOMContentGenerator = (function() {
         calendar.src = calendarSrc;
         _appendChildren(dueDateCont, calendar, dueDate);
 
-        const priorityCont = document.createElement("div");
+        const priorityCont = document.createElement("li");
         const priorityTag = document.createElement("p");
         const priority = document.createElement("p");
         priorityTag.classList.add("tag");
@@ -238,7 +298,7 @@ const DOMContentGenerator = (function() {
         priority.textContent = task.priority;
         _appendChildren(priorityCont, priorityTag, priority);
 
-        const doneContainer = document.createElement("div");
+        const doneContainer = document.createElement("li");
         const doneTag = document.createElement("p");
         const done = document.createElement("p");
         doneTag.classList.add("tag")
@@ -257,8 +317,10 @@ const DOMContentGenerator = (function() {
 
     const taskList = function(project) {
         let list = document.createElement("ul");
+        list.setAttribute("id", "task-list");
         if (project.tasks.length === 0) {
             const item = document.createElement("li");
+            item.classList.add("task-entry");
             list.appendChild(item);
 
             const noTaskElement = document.createElement("p");
@@ -269,7 +331,7 @@ const DOMContentGenerator = (function() {
         else {
             project.tasks.forEach(task => {
                 let item = document.createElement("li");
-                addTaskContent(item, task);
+                _includeTaskContent(item, task);
 
                 list.appendChild(item);
             });
@@ -277,7 +339,7 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    return {header, projectList, taskList};
+    return {header, projectList, taskList, taskInputForm};
 })();
 
 const State = (function() {
