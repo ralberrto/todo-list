@@ -151,6 +151,13 @@ const displayController = (function() {
 })();
 
 const DOMContentGenerator = (function() {
+    const _appendChildren = function(target, children) {
+        const elements = Array.prototype.slice.call(arguments, 1);
+        for (let element of elements) {
+            target.appendChild(element);
+        }
+    };
+
     const header = function(headerText) {
         const header = document.createElement("div");
         const titleText = document.createElement("p");
@@ -198,48 +205,41 @@ const DOMContentGenerator = (function() {
         details.classList.add("task-details");
 
         const dueDateCont = document.createElement("div");
-        dueDateCont.classList.add("due-container");
         const dueDate = document.createElement("p");
         const calendar = new Image();
-        calendar.src = calendarSrc;
+        dueDateCont.classList.add("due-container");
         dueDate.classList.add("due");
         dueDate.textContent = task.dueDate;
-        dueDateCont.appendChild(calendar);
-        dueDateCont.appendChild(dueDate);
+        calendar.src = calendarSrc;
+        _appendChildren(dueDateCont, calendar, dueDate);
 
         const priorityCont = document.createElement("div");
         const priorityTag = document.createElement("p");
-        priorityTag.classList.add("tag");
         const priority = document.createElement("p");
-        priorityTag.textContent = "Priority";
+        priorityTag.classList.add("tag");
         priority.classList.add("value");
         priority.classList.add(task.priority.toLowerCase());
-        priority.textContent = task.priority;
         priority.setAttribute("index", taskIndex);
         priority.onclick = displayController.shiftPriority;
-        priorityCont.appendChild(priorityTag);
-        priorityCont.appendChild(priority);
+        priorityTag.textContent = "Priority";
+        priority.textContent = task.priority;
+        _appendChildren(priorityCont, priorityTag, priority);
 
         const doneContainer = document.createElement("div");
         const doneTag = document.createElement("p");
-        doneTag.classList.add("tag")
-        doneTag.textContent = "Completion";
         const done = document.createElement("p");
-        done.textContent = task.doneString;
+        doneTag.classList.add("tag")
         done.classList.add("value");
-        done.setAttribute("index", taskIndex);
         if (task.done) {done.classList.add("done")};
+        done.setAttribute("index", taskIndex);
         done.onclick = displayController.switchTaskStatus;
-        doneContainer.appendChild(doneTag);
-        doneContainer.appendChild(done);
+        doneTag.textContent = "Completion";
+        done.textContent = task.doneString;
+        _appendChildren(doneContainer, doneTag, done);
 
-        details.appendChild(dueDateCont);
-        details.appendChild(priorityCont);
-        details.appendChild(doneContainer);
+        _appendChildren(details, dueDateCont, priorityCont, doneContainer);
 
-        wrapper.appendChild(title);
-        wrapper.appendChild(description);
-        wrapper.appendChild(details);
+        _appendChildren(wrapper, title, description, details);
         
         return wrapper;
     };
