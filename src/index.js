@@ -76,6 +76,14 @@ const displayController = (function() {
     addIcon.src = addSrc;
     addBtn.appendChild(addIcon);
 
+    const addProject = function() {
+        console.log("You're about to add a project.");
+    };
+
+    const addTask = function() {
+        console.log("You're about to add a task!");
+    }
+
     const switchTaskStatus = function() {
         const taskIndex = Number(this.getAttribute("index"));
         const task = State.activeProject.tasks[taskIndex];
@@ -107,11 +115,14 @@ const displayController = (function() {
     const _appendContainerToBody = function() {
         _appBody.appendChild(_mainContainer);
     };
+
     
     const renderProjects = function() {
+        _clearAppBody();
+        addBtn.onclick = addProject;
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
-        _clearAppBody();
+
         const header = DOMContentGenerator.header("PROJECTS");
         _appBody.prepend(header);
 
@@ -120,11 +131,14 @@ const displayController = (function() {
     };
 
     const renderTasks = function() {
+        _clearAppBody();
+        addBtn.onclick = addTask;
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
-        _clearAppBody();
+
         const header = DOMContentGenerator.header(State.activeProject.name);
         _appBody.prepend(header);
+
         let taskList = DOMContentGenerator.taskList(State.activeProject);
         _mainContainer.appendChild(taskList);
     };
