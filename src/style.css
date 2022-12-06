@@ -106,93 +106,93 @@ div#container ul li {
     margin: 0.5rem, 0;
 }
 
-div#container ul li .task-entry .due-container {
+div#container .task-entry .due-container {
     display: flex;
     align-items: center;
 }
 
-div#container ul li .task-entry p.due {
+div#container .task-entry p.due {
     margin-bottom: 0;
 }
 
-div#container ul li .task-entry img {
+div#container .task-entry img {
     width: 24px;
     height: 24px;
     margin-right: 0.5rem;
 }
 
-div#container ul li .task-entry .tag {
+div#container .task-entry .tag {
     color: var(--light-gray);
 }
 
-div#container ul li .task-entry .value {
+div#container .task-entry .value {
     padding: 0.5rem;
     background-color: var(--bg-color);
     border-radius: 10px;
     min-width: 4.5rem;
 }
 
-div#container ul li .task-entry .value.low {
+div#container .task-entry .value.low {
     background-color: var(--green);
     border: 1px solid var(--green);
 }
 
-div#container ul li .task-entry .value.medium {
+div#container .task-entry .value.medium {
     background-color: var(--yellow);
     border: 1px solid var(--yellow);
 }
 
-div#container ul li .task-entry .value.high {
+div#container .task-entry .value.high {
     background-color: var(--red);
     border: 1px solid var(--red);
 }
 
-div#container ul li .task-entry .value:active {
+div#container .task-entry .value:active {
     box-shadow: inset 1px 1px 1px black,
         inset -1px 1px 1px black;
 }
 
-div#container ul li .task-entry .value.done {
+div#container .task-entry .value.done {
     background-color: var(--green);
 }
 
-div#container ul li:nth-child(odd) {
+div#container .task-entry:nth-child(odd) {
     background-color: var(--lighter-gray);
 }
 
-div#container ul li:nth-child(even) {
+div#container .task-entry:nth-child(even) {
     background-color: white;
 }
 
-div#container li p {
+div#container .task-entry p {
     font-size: 1.1rem;
     color: var(--dark-gray);
 }
 
-div#container li p.entry-title {
+div#container .task-entry p.entry-title {
     font-size: 1.3rem;
     font-weight: bold;
     color: navy;
 }
 
-div#container li div.task-details {
+div#container .task-entry div.task-details {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
-div#container li div.task-details p {
+div#container .task-entry div.task-details p {
     font-size: 0.8em;
     text-align: center;
     margin: 0;
 }
 
-div#container li p.empty-task {
+div#container .task-entry p.empty-task {
     color: var(--light-gray);
     text-align: center;
 }
 
-div#container li div.details {
+div#container .task-entry div.details {
     display: flex;
 }
 

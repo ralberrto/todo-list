@@ -202,11 +202,10 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    const taskElement = function(task) {
+    const addTaskContent = function(container, task) {
         const taskIndex = State.activeProject.tasks.indexOf(task);
 
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("task-entry");
+        container.classList.add("task-entry");
 
         const title = document.createElement("p");
         title.classList.add("entry-title");
@@ -253,9 +252,7 @@ const DOMContentGenerator = (function() {
 
         _appendChildren(details, dueDateCont, priorityCont, doneContainer);
 
-        _appendChildren(wrapper, title, description, details);
-        
-        return wrapper;
+        _appendChildren(container, title, description, details);
     };
 
     const taskList = function(project) {
@@ -272,7 +269,7 @@ const DOMContentGenerator = (function() {
         else {
             project.tasks.forEach(task => {
                 let item = document.createElement("li");
-                item.appendChild(taskElement(task));
+                addTaskContent(item, task);
 
                 list.appendChild(item);
             });
