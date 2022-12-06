@@ -7,6 +7,18 @@ const Task = function(title, description, dueDate, priority) {
 
     let _dueDate = dueDate; 
 
+    let _priority = priority;
+
+    let _priorities = ["Low", "Medium", "High"];
+
+    const shiftPriority = function() {
+        let priorityIndex = _priorities.indexOf(_priority);
+        priorityIndex += 1;
+        if (priorityIndex > _priorities.length - 1) {priorityIndex -= priorityIndex}
+        _priority = _priorities[priorityIndex];
+        return _priorities[priorityIndex];
+    };
+
     const switchStatus = function() {
         _done = !_done;
     };
@@ -15,7 +27,7 @@ const Task = function(title, description, dueDate, priority) {
         return _dueDate.getYear() === (new Date()).getYear();
     };
 
-    const api = {title, description, priority, switchStatus};
+    const api = {title, description, priority, switchStatus, shiftPriority};
 
     Object.defineProperties(api, {
         "dueDate": {
@@ -32,6 +44,9 @@ const Task = function(title, description, dueDate, priority) {
         },
         "done": {
             get() {return _done;}
+        },
+        "priority": {
+            get() {return _priority;}
         }
     });
 
@@ -68,6 +83,15 @@ const displayController = (function() {
         this.textContent = task.doneString;
         this.classList.toggle("done");
     };
+
+    const shiftPriority = function() {
+        const taskIndex = Number(this.getAttribute("index"));
+        const task = State.activeProject.tasks[taskIndex];
+        this.classList.remove(task.priority.toLowerCase());
+        const newPriority = task.shiftPriority();
+        this.classList.add(newPriority.toLowerCase());
+        this.textContent = newPriority;
+    }
 
     const loadPage = function() {
         renderTasks.call(tasksTab);
@@ -123,7 +147,7 @@ const displayController = (function() {
     projectsTab.onclick = renderProjects;
     tasksTab.onclick = renderTasks;
 
-    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority};
 })();
 
 const DOMContentGenerator = (function() {
@@ -191,6 +215,8 @@ const DOMContentGenerator = (function() {
         priority.classList.add("value");
         priority.classList.add(task.priority.toLowerCase());
         priority.textContent = task.priority;
+        priority.setAttribute("index", taskIndex);
+        priority.onclick = displayController.shiftPriority;
         priorityCont.appendChild(priorityTag);
         priorityCont.appendChild(priority);
 
