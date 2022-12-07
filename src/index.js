@@ -81,16 +81,7 @@ const displayController = (function() {
     };
 
     const addTask = function() {
-        let taskList;
-        if (State.activeProject.tasks.length === 0) {
-            _clearMainContainer();
-            taskList = document.createElement("ul");
-            taskList.setAttribute("id", "task-list");
-            _mainContainer.appendChild(taskList);
-        }
-        else {
-            taskList = document.getElementById("task-list");
-        }
+        const taskList = document.getElementById("task-list");
         taskList.appendChild(DOMContentGenerator.taskInputForm());
         addBtn.style.display = "none";
         window.scrollTo(0, document.body.scrollHeight);
@@ -225,7 +216,10 @@ const DOMContentGenerator = (function() {
     };
 
     const taskInputForm = function() {
+        const taskList = document.getElementById("task-list");
         const taskIndex = State.activeProject.tasks.length;
+
+        if (taskIndex === 0) {taskList.innerHTML = "";}
 
         const container = document.createElement("li");
         container.classList.add("task-entry");
