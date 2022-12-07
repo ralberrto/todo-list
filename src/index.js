@@ -76,14 +76,55 @@ const displayController = (function() {
     addIcon.src = addSrc;
     addBtn.appendChild(addIcon);
 
+    const loadPage = function() {
+        renderTasks.call(tasksTab);
+    };
+
+    const _clearAppBody = function() {
+        window.scrollTo(0, 0);
+        _appBody.innerHTML = "";
+        _clearMainContainer();
+        _appendContainerToBody();
+    };
+
+    const _clearMainContainer = function() {
+        _mainContainer.innerHTML = "";
+    };
+
+    const _appendContainerToBody = function() {
+        _appBody.appendChild(_mainContainer);
+    };
+
+    const _hideAddBtn = function() {
+        addBtn.style.display = "none";
+    };
+
+    const _showAddBtn = function() {
+        addBtn.style.display = "grid";
+    };
+
     const addProject = function() {
-        console.log("You're about to add a project.");
+        const projectList = document.getElementById("project-list");
+        projectList.appendChild(DOMContentGenerator.projectInputForm());
+        _hideAddBtn();
+        window.scrollTo(0, document.body.scrollHeight);
+    };
+
+    const submitProject = function(event) {
+        event.preventDefault();
+        const title = document.querySelector("#add-project .entry-title").value;
+        const description = document.querySelector("#add-project .description").value;
+        const project = Project(title, description);
+        State.addProject(project);
+
+        renderProjects.call(projectsTab);
+        _showAddBtn();
     };
 
     const addTask = function() {
         const taskList = document.getElementById("task-list");
         taskList.appendChild(DOMContentGenerator.taskInputForm());
-        addBtn.style.display = "none";
+        _hideAddBtn();
         window.scrollTo(0, document.body.scrollHeight);
         //addBtn.style.display = "none";
     };
@@ -105,7 +146,7 @@ const displayController = (function() {
         State.activeProject.addTask(task);
         renderTasks.call(tasksTab);
 
-        addBtn.style.display = "grid";
+        _showAddBtn();
         window.scrollTo(0, document.body.scrollHeight);
     };
 
@@ -125,25 +166,6 @@ const displayController = (function() {
         this.classList.add(newPriority.toLowerCase());
         this.textContent = newPriority;
     }
-
-    const loadPage = function() {
-        renderTasks.call(tasksTab);
-    };
-
-    const _clearAppBody = function() {
-        window.scrollTo(0, 0);
-        _appBody.innerHTML = "";
-        _clearMainContainer();
-        _appendContainerToBody();
-    };
-
-    const _clearMainContainer = function() {
-        _mainContainer.innerHTML = "";
-    };
-
-    const _appendContainerToBody = function() {
-        _appBody.appendChild(_mainContainer);
-    };
 
     
     const renderProjects = function() {
@@ -176,7 +198,7 @@ const displayController = (function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         tasksTab.classList.add("active");
         addBtn.onclick = addTask;
-        const activeProjectIndex = Number(this.getAttribute("index").substring(1));
+        const activeProjectIndex = Number(this.getAttribute("index"));
         State.activeProject = activeProjectIndex;
         _clearAppBody();
         const project = State.activeProject;
@@ -191,7 +213,8 @@ const displayController = (function() {
     projectsTab.onclick = renderProjects;
     tasksTab.onclick = renderTasks;
 
-    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority, submitTask};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority,
+        submitTask, submitProject};
 })();
 
 const DOMContentGenerator = (function() {
@@ -213,9 +236,10 @@ const DOMContentGenerator = (function() {
     
     const projectList = function(projects) {
         let list = document.createElement("ul");
+        list.setAttribute("id", "project-list");
         projects.forEach((project, index) => {
             let item = document.createElement("li");
-            item.setAttribute("index", `i${index}`)
+            item.setAttribute("index", `${index}`)
             item.classList.add("project-entry");
             item.onclick = displayController.renderProjectTasks;
             list.appendChild(item);
@@ -230,6 +254,40 @@ const DOMContentGenerator = (function() {
             item.appendChild(projectDescription);
         });
         return list;
+    };
+
+    const projectInputForm = function() {
+        const container = document.createElement("form");
+        container.setAttribute("id", "add-project");
+        container.setAttribute("action", "");
+        container.setAttribute("method", "get");
+        container.classList.add("project-entry");
+        //container.classList.add("project-form")
+        container.addEventListener("submit", displayController.submitProject);
+
+        const title = document.createElement("input");
+        title.setAttribute("type", "text");
+        title.setAttribute("placeholder", "Title");
+        title.setAttribute("required", "");
+        title.classList.add("entry-title");
+
+        const description = document.createElement("input");
+        description.setAttribute("type", "text");
+        description.setAttribute("placeholder", "Description (optional)");
+        description.classList.add("description");
+
+        const btnsCont = document.createElement("ul");
+        btnsCont.classList.add("project-btns");
+
+        const saveBtn = document.createElement("button");
+        saveBtn.setAttribute("type", "submit");
+        saveBtn.setAttribute("form", "add-project");
+        saveBtn.classList.add("value");
+        saveBtn.textContent = "Save";
+        btnsCont.appendChild(saveBtn);
+
+        _appendChildren(container, title, description, btnsCont);
+        return container;
     };
 
     const taskInputForm = function() {
@@ -381,7 +439,7 @@ const DOMContentGenerator = (function() {
         return list;
     };
 
-    return {header, projectList, taskList, taskInputForm};
+    return {header, projectList, taskList, taskInputForm, projectInputForm};
 })();
 
 const State = (function() {

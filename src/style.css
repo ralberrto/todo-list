@@ -129,7 +129,8 @@ div#container .task-entry p.tag {
     color: var(--light-gray);
 }
 
-div#container .task-entry .task-details .value {
+div#container .task-entry .task-details .value,
+div#container .project-entry .value {
     border: none;
     text-align: center;
     padding: 0.5rem;
@@ -140,10 +141,16 @@ div#container .task-entry .task-details .value {
     color: var(--dark-gray)
 }
 
-div#container .task-entry .task-details button.value {
+div#container .task-entry .task-details button.value,
+div#container .project-entry button.value {
     font-family: inherit;
     font-size: 0.8rem;
     color: var(--dark-gray);
+}
+
+div#container .project-entry .project-btns {
+    display: flex;
+    justify-content: flex-end;
 }
 
 div#container .task-entry .value.low {
@@ -161,7 +168,8 @@ div#container .task-entry .value.high {
     border: 1px solid var(--red);
 }
 
-div#container .task-entry .value:active {
+div#container .task-entry .value:active,
+div#container .project-entry .value:active {
     box-shadow: inset 1px 1px 1px var(--dark-gray),
         inset -1px 1px 1px var(--dark-gray);
 }
@@ -172,13 +180,15 @@ div#container .task-entry .value.done {
 
 div#container .task-entry:nth-child(odd),
 div#container .project-entry:nth-child(odd),
-div#container .task-entry:nth-child(odd) input {
+div#container .task-entry:nth-child(odd) input,
+div#container .project-entry:nth-child(odd) input{
     background-color: var(--lighter-gray);
 }
 
 div#container .task-entry:nth-child(even),
 div#container .project-entry:nth-child(even),
-div#container .task-entry:nth-child(even) input {
+div#container .task-entry:nth-child(even) input,
+div#container .project-entry:nth-child(even) input{
     background-color: white;
 }
 
@@ -207,7 +217,8 @@ div#container .task-entry .task-details input:invalid {
     background-color: var(--light-red);
 }
 
-div#container #add-task:valid button {
+div#container #add-task:valid button,
+div#container #add-project:valid button {
     background-color: var(--green);
 }
 
