@@ -24,6 +24,8 @@
     --footer-height: clamp(40px, 8vh, 60px);
     --add-btn-height: clamp(40px, 8vh, 55px);
     --add-btn-margin: 1rem;
+    
+    --entry-title-size: 1.3rem;
 
     --bradius: 1rem;
     --bweight: 3px;
@@ -103,6 +105,7 @@ div#container .entry:last-child {
 }
 
 div#container .entry {
+    position: relative;
     padding: 0.5rem 1rem;
     margin: 0.5rem, 0;
 }
@@ -188,7 +191,7 @@ div#container input[type="text"] {
 
 div#container p.entry-title,
 div#container input.entry-title {
-    font-size: 1.3rem;
+    font-size: var(--entry-title-size);
     margin: 1.3rem 0;
     font-weight: bold;
     color: navy;
@@ -228,6 +231,16 @@ div#container .entry p.empty-task {
 
 div#container .entry .details {
     display: flex;
+}
+
+div#container .entry .delete-btn {
+    position: absolute;
+    right: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    border-radius: 5px;
+    top: var(--entry-title-size);
+    color: var(--lighter-gray);
 }
 
 input {
