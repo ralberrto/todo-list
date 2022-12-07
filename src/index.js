@@ -221,7 +221,8 @@ const DOMContentGenerator = (function() {
 
         if (taskIndex === 0) {taskList.innerHTML = "";}
 
-        const container = document.createElement("li");
+        const container = document.createElement("form");
+        container.setAttribute("id", "add-task");
         container.classList.add("task-entry");
         container.classList.add("task-form")
 
@@ -244,6 +245,7 @@ const DOMContentGenerator = (function() {
         dueDate.classList.add("due");
         dueDate.setAttribute("type", "date");
         dueDate.setAttribute("id", `date${taskIndex}`);
+        dueDate.setAttribute("required", "");
         dueDate.classList.add("value");
         const calendarImage = new Image();
         calendarImage.src = calendarSrc;
@@ -269,6 +271,8 @@ const DOMContentGenerator = (function() {
         _appendChildren(priorityCont, priorityTag, priority);
 
         const saveBtn = document.createElement("button");
+        saveBtn.setAttribute("type", "submit");
+        saveBtn.setAttribute("form", "add-task");
         saveBtn.classList.add("value");
         saveBtn.textContent = "Save";
         //const saveBtnCont = document.createElement("div");
