@@ -240,7 +240,7 @@ const DOMContentGenerator = (function() {
         projects.forEach((project, index) => {
             let item = document.createElement("li");
             item.setAttribute("index", `${index}`)
-            item.classList.add("project-entry");
+            item.classList.add("entry");
             item.onclick = displayController.renderProjectTasks;
             list.appendChild(item);
 
@@ -261,7 +261,7 @@ const DOMContentGenerator = (function() {
         container.setAttribute("id", "add-project");
         container.setAttribute("action", "");
         container.setAttribute("method", "get");
-        container.classList.add("project-entry");
+        container.classList.add("entry");
         //container.classList.add("project-form")
         container.addEventListener("submit", displayController.submitProject);
 
@@ -300,7 +300,7 @@ const DOMContentGenerator = (function() {
         container.setAttribute("id", "add-task");
         container.setAttribute("action", "");
         container.setAttribute("method", "get");
-        container.classList.add("task-entry");
+        container.classList.add("entry");
         container.classList.add("task-form")
         container.addEventListener("submit", displayController.submitTask);
 
@@ -365,7 +365,7 @@ const DOMContentGenerator = (function() {
     const _includeTaskContent = function(container, task) {
         const taskIndex = State.activeProject.tasks.indexOf(task);
 
-        container.classList.add("task-entry");
+        container.classList.add("entry");
 
         const title = document.createElement("p");
         title.classList.add("entry-title");
@@ -420,7 +420,7 @@ const DOMContentGenerator = (function() {
         list.setAttribute("id", "task-list");
         if (project.tasks.length === 0) {
             const item = document.createElement("li");
-            item.classList.add("task-entry");
+            item.classList.add("entry");
             list.appendChild(item);
 
             const noTaskElement = document.createElement("p");
