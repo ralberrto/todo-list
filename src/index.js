@@ -103,6 +103,10 @@ const displayController = (function() {
         addBtn.style.display = "grid";
     };
 
+    const showDeleteEntryBtn = function() {
+        console.log("Are you trying to delete something?");
+    }
+
     const addProject = function() {
         const projectList = document.getElementById("project-list");
         projectList.appendChild(DOMContentGenerator.projectInputForm());
@@ -214,7 +218,7 @@ const displayController = (function() {
     tasksTab.onclick = renderTasks;
 
     return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority,
-        submitTask, submitProject};
+        submitTask, submitProject, showDeleteEntryBtn};
 })();
 
 const DOMContentGenerator = (function() {
@@ -282,7 +286,6 @@ const DOMContentGenerator = (function() {
         const saveBtn = document.createElement("button");
         saveBtn.setAttribute("type", "submit");
         saveBtn.setAttribute("form", "add-project");
-        saveBtn.classList.add("value");
         saveBtn.textContent = "Save";
         btnsCont.appendChild(saveBtn);
 
@@ -325,7 +328,6 @@ const DOMContentGenerator = (function() {
         dueDate.setAttribute("type", "date");
         dueDate.setAttribute("id", `date${taskIndex}`);
         dueDate.setAttribute("required", "");
-        dueDate.classList.add("value");
         const calendarImage = new Image();
         calendarImage.src = calendarSrc;
         const dateInputLabel = document.createElement("label");
@@ -339,7 +341,6 @@ const DOMContentGenerator = (function() {
         priorityTag.classList.add("tag");
         priorityTag.textContent = "Priority";
         const priority = document.createElement("select");
-        priority.classList.add("value");
         priority.setAttribute("index", taskIndex);
         const highOption = document.createElement("option");
         highOption.textContent = "High";
@@ -353,7 +354,6 @@ const DOMContentGenerator = (function() {
         const saveBtn = document.createElement("button");
         saveBtn.setAttribute("type", "submit");
         saveBtn.setAttribute("form", "add-task");
-        saveBtn.classList.add("value");
         saveBtn.textContent = "Save";
 
         _appendChildren(details, dueDateCont, priorityCont, saveBtn);
@@ -388,11 +388,11 @@ const DOMContentGenerator = (function() {
 
         const priorityCont = document.createElement("li");
         const priorityTag = document.createElement("p");
-        const priority = document.createElement("p");
+        const priority = document.createElement("button");
         priorityTag.classList.add("tag");
-        priority.classList.add("value");
         priority.classList.add(task.priority.toLowerCase());
         priority.setAttribute("index", taskIndex);
+        priority.setAttribute("type", "button");
         priority.onclick = displayController.shiftPriority;
         priorityTag.textContent = "Priority";
         priority.textContent = task.priority;
@@ -400,11 +400,11 @@ const DOMContentGenerator = (function() {
 
         const doneContainer = document.createElement("li");
         const doneTag = document.createElement("p");
-        const done = document.createElement("p");
+        const done = document.createElement("button");
         doneTag.classList.add("tag")
-        done.classList.add("value");
         if (task.done) {done.classList.add("done")};
         done.setAttribute("index", taskIndex);
+        done.setAttribute("type", "button");
         done.onclick = displayController.switchTaskStatus;
         doneTag.textContent = "Completion";
         done.textContent = task.doneString;
@@ -412,7 +412,12 @@ const DOMContentGenerator = (function() {
 
         _appendChildren(details, dueDateCont, priorityCont, doneContainer);
 
-        _appendChildren(container, title, description, details);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.setAttribute("type", "button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.textContent = "Remove";
+
+        _appendChildren(container, title, description, details, deleteBtn);
     };
 
     const taskList = function(project) {

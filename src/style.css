@@ -126,8 +126,9 @@ div#container .entry p.tag {
     color: var(--light-gray);
 }
 
-div#container .entry .task-details .value,
-div#container .entry .project-btns .value {
+div#container .entry button {
+    font-family: inherit;
+    font-size: 0.8rem;
     border: none;
     text-align: center;
     padding: 0.5rem;
@@ -138,39 +139,32 @@ div#container .entry .project-btns .value {
     color: var(--dark-gray)
 }
 
-div#container .entry .task-details button.value,
-div#container .entry .project-btns button.value {
-    font-family: inherit;
-    font-size: 0.8rem;
-    color: var(--dark-gray);
-}
-
 div#container .entry .project-btns {
     display: flex;
     justify-content: flex-end;
 }
 
-div#container .entry .value.low {
+div#container .entry button.low {
     background-color: var(--green);
     border: 1px solid var(--green);
 }
 
-div#container .entry .value.medium {
+div#container .entry button.medium {
     background-color: var(--yellow);
     border: 1px solid var(--yellow);
 }
 
-div#container .entry .value.high {
+div#container .entry button.high {
     background-color: var(--red);
     border: 1px solid var(--red);
 }
 
-div#container .entry .value:active {
+div#container .entry button:active {
     box-shadow: inset 1px 1px 1px var(--dark-gray),
         inset -1px 1px 1px var(--dark-gray);
 }
 
-div#container .entry .value.done {
+div#container .entry button.done {
     background-color: var(--green);
 }
 
