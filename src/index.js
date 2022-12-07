@@ -503,29 +503,7 @@ const State = (function() {
         "Low"
     ));
     
-    const agency = Project(
-        "Agency",
-        "Start up freelance consultant agency"
-    );
-    agency.addTask(Task(
-        "Set meeting",
-        "Set meeting with Omar Duarte, the consultant. Tel: 33 3333 3333.",
-        new Date(),
-        "High"
-    ));
-    agency.addTask(Task(
-        "Make transaction",
-        "Pay consultant the audience. Account number: 4421 2342 2321 2929",
-        new Date(),
-        "Medium"
-    ));
-
-    const garden = Project(
-        "Garden",
-        "Make functional hydroponics garden"
-    );
-
-    [gettingStarted, agency, garden].forEach(project => projects.push(project));
+    projects.push(gettingStarted);
 
     const addProject = function(project) {
         projects.push(project);
