@@ -282,10 +282,13 @@ const DOMContentGenerator = (function() {
             let projectDescription = document.createElement("p");
             projectDescription.textContent = project.description;
 
-            let delBtn = _createDelBtn();
-            delBtn.classList.add("delete-project");
-            delBtn.setAttribute("index", index);
-            _appendChildren(item, projectName, projectDescription, delBtn);
+            _appendChildren(item, projectName, projectDescription);
+            if (index !== 0) {
+                let delBtn = _createDelBtn();
+                delBtn.classList.add("delete-project");
+                delBtn.setAttribute("index", index);
+                item.appendChild(delBtn);
+            }
         });
         return list;
     };
@@ -499,11 +502,17 @@ const State = (function() {
     gettingStarted.addTask(Task(
         "Get to Work",
         "All that's left for you to do is get to work to make your dreams come true!",
-        new Date(2023, 0, 2),
+        new Date(),
         "Low"
     ));
+
+    const agency = Project(
+        "Agency",
+        "Along with my colaborators get this amazing project get going"
+    );
     
     projects.push(gettingStarted);
+    projects.push(agency);
 
     const addProject = function(project) {
         projects.push(project);
