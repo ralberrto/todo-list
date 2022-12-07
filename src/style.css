@@ -4,8 +4,9 @@
 }
 
 :root {
-    --light-gray: #cccccc;
-    --dark-gray: #777777;
+    --light-gray: #E2E8F0;
+    --darker-gray: #334155;
+    --gray: #94A3B8;
     --lighter-gray: #F1F5F9;
     --mustard: #CA8A04;
     --blue: #1E293B;
@@ -126,7 +127,7 @@ div#container .entry img {
 }
 
 div#container .entry p.tag {
-    color: var(--light-gray);
+    color: var(--gray);
 }
 
 div#container .entry button {
@@ -139,7 +140,7 @@ div#container .entry button {
     border-radius: 10px;
     min-width: 4.5rem;
     font-family: inherit;
-    color: var(--dark-gray)
+    color: var(--darker-gray)
 }
 
 div#container .entry .project-btns {
@@ -163,8 +164,8 @@ div#container .entry button.high {
 }
 
 div#container .entry button:active {
-    box-shadow: inset 1px 1px 1px var(--dark-gray),
-        inset -1px 1px 1px var(--dark-gray);
+    box-shadow: inset 1px 1px 1px var(--darker-gray),
+        inset -1px 1px 1px var(--darker-gray);
 }
 
 div#container .entry button.done {
@@ -185,7 +186,7 @@ div#container p,
 div#container input[type="text"] {
     font-size: 1.1rem;
     margin-bottom: 1.1rem;
-    color: var(--dark-gray);
+    color: var(--darker-gray);
     width: 100%
 }
 
@@ -225,7 +226,7 @@ div#container .entry .task-details input {
 }
 
 div#container .entry p.empty-task {
-    color: var(--light-gray);
+    color: var(--gray);
     text-align: center;
 }
 
@@ -239,8 +240,10 @@ div#container .entry .delete-btn {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     border-radius: 5px;
+    background-color: var(--light-gray);
     top: var(--entry-title-size);
-    color: var(--lighter-gray);
+    color: var(--gray);
+    z-index: 1;
 }
 
 input {
@@ -249,7 +252,7 @@ input {
 }
 
 input::placeholder {
-    color: var(--light-gray);
+    color: var(--gray);
 }
 
 button {

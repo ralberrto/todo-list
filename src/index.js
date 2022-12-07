@@ -55,10 +55,16 @@ const Task = function(title, description, dueDate, priority) {
 
 const Project = function(name, description) {
     const tasks = [];
+
     const addTask = function(task) {
         tasks.push(task);
-    }
-    return {name, description, tasks, addTask};
+    };
+
+    const deleteTask = function(index) {
+        tasks.splice(index, 1);
+    };
+
+    return {name, description, tasks, addTask, deleteTask};
 };
 
 const displayController = (function() {
@@ -103,9 +109,18 @@ const displayController = (function() {
         addBtn.style.display = "grid";
     };
 
-    const showDeleteEntryBtn = function() {
-        console.log("Are you trying to delete something?");
-    }
+    const deleteEntry = function(event) {
+        event.stopPropagation();
+        const index = Number(this.getAttribute("index"));
+        if (this.classList.contains("delete-task")) {
+            State.activeProject.deleteTask(index);
+            renderTasks.call(tasksTab);
+        }
+        else if (this.classList.contains("delete-project")) {
+            State.projects.splice(index, 1);
+            renderProjects.call(projectsTab);
+        }
+    };
 
     const addProject = function() {
         const projectList = document.getElementById("project-list");
@@ -174,6 +189,7 @@ const displayController = (function() {
     
     const renderProjects = function() {
         _clearAppBody();
+        _showAddBtn();
         addBtn.onclick = addProject;
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
@@ -187,6 +203,7 @@ const displayController = (function() {
 
     const renderTasks = function() {
         _clearAppBody();
+        _showAddBtn();
         addBtn.onclick = addTask;
         tabs.forEach(tab => tab.classList.remove("active"));
         this.classList.add("active");
@@ -218,7 +235,7 @@ const displayController = (function() {
     tasksTab.onclick = renderTasks;
 
     return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority,
-        submitTask, submitProject, showDeleteEntryBtn};
+        submitTask, submitProject, deleteEntry};
 })();
 
 const DOMContentGenerator = (function() {
@@ -238,6 +255,16 @@ const DOMContentGenerator = (function() {
         return header;
     };
     
+    const _createDelBtn = function() {
+        const deleteBtn = document.createElement("button");
+        deleteBtn.setAttribute("type", "button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.textContent = "Remove";
+        deleteBtn.onclick = displayController.deleteEntry;
+
+        return deleteBtn;
+    };
+
     const projectList = function(projects) {
         let list = document.createElement("ul");
         list.setAttribute("id", "project-list");
@@ -251,11 +278,14 @@ const DOMContentGenerator = (function() {
             let projectName = document.createElement("p");
             projectName.textContent = project.name;
             projectName.classList.add("entry-title");
-            item.appendChild(projectName);
 
             let projectDescription = document.createElement("p");
             projectDescription.textContent = project.description;
-            item.appendChild(projectDescription);
+
+            let delBtn = _createDelBtn();
+            delBtn.classList.add("delete-project");
+            delBtn.setAttribute("index", index);
+            _appendChildren(item, projectName, projectDescription, delBtn);
         });
         return list;
     };
@@ -410,14 +440,12 @@ const DOMContentGenerator = (function() {
         done.textContent = task.doneString;
         _appendChildren(doneContainer, doneTag, done);
 
+        const delBtn = _createDelBtn();
+        delBtn.classList.add("delete-task");
+        delBtn.setAttribute("index", taskIndex);
         _appendChildren(details, dueDateCont, priorityCont, doneContainer);
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.setAttribute("type", "button");
-        deleteBtn.classList.add("delete-btn");
-        deleteBtn.textContent = "Remove";
-
-        _appendChildren(container, title, description, details, deleteBtn);
+        _appendChildren(container, title, description, details, delBtn);
     };
 
     const taskList = function(project) {
