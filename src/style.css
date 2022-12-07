@@ -65,6 +65,7 @@ header {
     padding-left: 1rem;
     background-color: var(--fixed-ui-elements);
     color: var(--fixed-ui-color);
+    z-index: 2;
 }
 
 div#app-body {
@@ -130,7 +131,9 @@ div#container .entry p.tag {
     color: var(--gray);
 }
 
-div#container .entry button {
+div#container .entry button,
+div#container .entry .task-details input, 
+div#container .entry .task-details select {
     font-family: inherit;
     font-size: 0.8rem;
     border: none;
@@ -190,6 +193,10 @@ div#container input[type="text"] {
     width: 100%
 }
 
+div#container input[type="text"] {
+    padding: 0.5rem;
+}
+
 div#container p.entry-title,
 div#container input.entry-title {
     font-size: var(--entry-title-size);
@@ -246,7 +253,7 @@ div#container .entry .delete-btn {
     z-index: 1;
 }
 
-input {
+input, select {
     outline: none;
     border: none;
 }
