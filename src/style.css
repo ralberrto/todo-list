@@ -126,10 +126,19 @@ div#container .task-entry p.tag {
 }
 
 div#container .task-entry .value {
+    border: none;
+    text-align: center;
     padding: 0.5rem;
     background-color: var(--bg-color);
     border-radius: 10px;
     min-width: 4.5rem;
+}
+
+div#container .task-entry button.value {
+    font-family: inherit;
+    font-size: 0.8rem;
+    background-color: var(--green);
+    border: 1px solid var(--green);
 }
 
 div#container .task-entry .value.low {
@@ -148,8 +157,8 @@ div#container .task-entry .value.high {
 }
 
 div#container .task-entry .value:active {
-    box-shadow: inset 1px 1px 1px black,
-        inset -1px 1px 1px black;
+    box-shadow: inset 1px 1px 1px var(--dark-gray),
+        inset -1px 1px 1px var(--dark-gray);
 }
 
 div#container .task-entry .value.done {

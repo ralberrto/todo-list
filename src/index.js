@@ -81,12 +81,25 @@ const displayController = (function() {
     };
 
     const addTask = function() {
-        const taskList = document.getElementById("task-list");
+        let taskList;
+        if (State.activeProject.tasks.length === 0) {
+            _clearMainContainer();
+            taskList = document.createElement("ul");
+            taskList.setAttribute("id", "task-list");
+            _mainContainer.appendChild(taskList);
+        }
+        else {
+            taskList = document.getElementById("task-list");
+        }
         taskList.appendChild(DOMContentGenerator.taskInputForm());
-        window.scrollTo(0, document.body.scrollHeight + 100);
+        addBtn.style.display = "none";
+        window.scrollTo(0, document.body.scrollHeight);
         //addBtn.style.display = "none";
-        console.log("You're about to add a task!");
-    }
+    };
+
+    const saveTask = function() {
+        console.log("You're about to save the task.")
+    };
 
     const switchTaskStatus = function() {
         const taskIndex = Number(this.getAttribute("index"));
@@ -112,8 +125,12 @@ const displayController = (function() {
     const _clearAppBody = function() {
         window.scrollTo(0, 0);
         _appBody.innerHTML = "";
-        _mainContainer.innerHTML = "";
+        _clearMainContainer();
         _appendContainerToBody();
+    };
+
+    const _clearMainContainer = function() {
+        _mainContainer.innerHTML = "";
     };
 
     const _appendContainerToBody = function() {
@@ -150,6 +167,7 @@ const displayController = (function() {
     const renderProjectTasks = function() {
         tabs.forEach(tab => tab.classList.remove("active"));
         tasksTab.classList.add("active");
+        addBtn.onclick = addTask;
         const activeProjectIndex = Number(this.getAttribute("index").substring(1));
         State.activeProject = activeProjectIndex;
         _clearAppBody();
@@ -165,7 +183,7 @@ const displayController = (function() {
     projectsTab.onclick = renderProjects;
     tasksTab.onclick = renderTasks;
 
-    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority, saveTask};
 })();
 
 const DOMContentGenerator = (function() {
@@ -256,7 +274,17 @@ const DOMContentGenerator = (function() {
         _appendChildren(priority, highOption, medOption, lowOption);
         _appendChildren(priorityCont, priorityTag, priority);
 
-        _appendChildren(details, dueDateCont, priorityCont);
+        const saveBtn = document.createElement("button");
+        saveBtn.classList.add("value");
+        saveBtn.textContent = "Save";
+        //const saveBtnCont = document.createElement("div");
+        //const saveBtn = document.createElement("p");
+        //saveBtn.classList.add("value");
+        //saveBtn.textContent = "Save";
+        //saveBtnCont.onclick = displayController.saveTask;
+        //saveBtnCont.appendChild(saveBtn);
+
+        _appendChildren(details, dueDateCont, priorityCont, saveBtn);
 
         _appendChildren(container, title, description, details);
         return container;
