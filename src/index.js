@@ -88,8 +88,25 @@ const displayController = (function() {
         //addBtn.style.display = "none";
     };
 
-    const saveTask = function() {
-        console.log("You're about to save the task.")
+    const submitTask = function(event) {
+        event.preventDefault();
+        const title = document.querySelector("#add-task .entry-title").value;
+        const description = document.querySelector("#add-task .description").value;
+
+        const dateISOString = document.querySelector("#add-task .task-details .due-container input").value
+            + "T00:00:00.000Z"; //To make sure it's always UTC.
+        const dateUTC = new Date(dateISOString);
+        const offset = dateUTC.getTimezoneOffset();
+        const localDate = new Date(dateUTC.getTime() + offset*60000);
+        
+        const priority = document.querySelector("#add-task .task-details .priority select").value;
+        const task = Task(title, description, localDate, priority);
+
+        State.activeProject.addTask(task);
+        renderTasks.call(tasksTab);
+
+        addBtn.style.display = "grid";
+        window.scrollTo(0, document.body.scrollHeight);
     };
 
     const switchTaskStatus = function() {
@@ -174,7 +191,7 @@ const displayController = (function() {
     projectsTab.onclick = renderProjects;
     tasksTab.onclick = renderTasks;
 
-    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority, saveTask};
+    return {loadPage, renderProjects, renderTasks, renderProjectTasks, switchTaskStatus, shiftPriority, submitTask};
 })();
 
 const DOMContentGenerator = (function() {
@@ -223,8 +240,11 @@ const DOMContentGenerator = (function() {
 
         const container = document.createElement("form");
         container.setAttribute("id", "add-task");
+        container.setAttribute("action", "");
+        container.setAttribute("method", "get");
         container.classList.add("task-entry");
         container.classList.add("task-form")
+        container.addEventListener("submit", displayController.submitTask);
 
         const title = document.createElement("input");
         title.setAttribute("type", "text");
@@ -235,6 +255,7 @@ const DOMContentGenerator = (function() {
         const description = document.createElement("input");
         description.setAttribute("type", "text");
         description.setAttribute("placeholder", "Description (optional)");
+        description.classList.add("description");
 
         const details = document.createElement("ul");
         details.classList.add("task-details");
@@ -255,6 +276,7 @@ const DOMContentGenerator = (function() {
         _appendChildren(dueDateCont, dateInputLabel, dueDate);
         
         const priorityCont = document.createElement("li");
+        priorityCont.classList.add("priority");
         const priorityTag = document.createElement("p");
         priorityTag.classList.add("tag");
         priorityTag.textContent = "Priority";
@@ -275,12 +297,6 @@ const DOMContentGenerator = (function() {
         saveBtn.setAttribute("form", "add-task");
         saveBtn.classList.add("value");
         saveBtn.textContent = "Save";
-        //const saveBtnCont = document.createElement("div");
-        //const saveBtn = document.createElement("p");
-        //saveBtn.classList.add("value");
-        //saveBtn.textContent = "Save";
-        //saveBtnCont.onclick = displayController.saveTask;
-        //saveBtnCont.appendChild(saveBtn);
 
         _appendChildren(details, dueDateCont, priorityCont, saveBtn);
 
