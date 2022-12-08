@@ -3,12 +3,12 @@ import addSrc from "./icons/add_FILL1_wght400_GRAD0_opsz24.svg";
 import calendarSrc from "./icons/calendar_month_FILL1_wght400_GRAD0_opsz24.svg";
 
 const Task = function(title, description, dueDate, priority) {
-    let _done = false;
-
-    let _dueDate = dueDate; 
-
+    let _title = title;
+    let _description = description;
+    let _dueDate = dueDate;
     let _priority = priority;
 
+    let _done = false;
     let _priorities = ["Low", "Medium", "High"];
 
     const shiftPriority = function() {
@@ -16,7 +16,7 @@ const Task = function(title, description, dueDate, priority) {
         priorityIndex += 1;
         if (priorityIndex > _priorities.length - 1) {priorityIndex -= priorityIndex}
         _priority = _priorities[priorityIndex];
-        return _priorities[priorityIndex];
+        return _priority;
     };
 
     const switchStatus = function() {
@@ -27,16 +27,19 @@ const Task = function(title, description, dueDate, priority) {
         return _dueDate.getYear() === (new Date()).getYear();
     };
 
-    const api = {title, description, priority, switchStatus, shiftPriority};
+    const instance = {switchStatus, shiftPriority};
 
-    Object.defineProperties(api, {
-        "dueDate": {
+    Object.defineProperties(instance, {
+        "dueDateHuman": {
             get() {
                 if (_inThisYear()) {
                     return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.shortDateOptions);
                 }
                 return _dueDate.toLocaleString(LocaleConfig.locale, LocaleConfig.longDateOptions);
             },
+        },
+        "dueDate": {
+            get() {return _dueDate;},
             set(date) {_dueDate = date;}
         },
         "doneString": {
@@ -47,13 +50,24 @@ const Task = function(title, description, dueDate, priority) {
         },
         "priority": {
             get() {return _priority;}
-        }
+        },
+        "title": {
+            get() {return _title},
+            set(title) {_title = title}
+        },
+        "description": {
+            get() {return _description},
+            set(description) {_description = description}
+        },
     });
 
-    return api;
+    return instance;
 };
 
 const Project = function(name, description) {
+    let _name = name;
+    let _description = description;
+
     const tasks = [];
 
     const addTask = function(task) {
@@ -64,7 +78,20 @@ const Project = function(name, description) {
         tasks.splice(index, 1);
     };
 
-    return {name, description, tasks, addTask, deleteTask};
+    const instance = {tasks, addTask, deleteTask};
+
+    Object.defineProperties(instance, {
+        "name": {
+            get() {return _name},
+            set(name) {_name = name}
+        },
+        "description": {
+            get() {return _description},
+            set(description) {_description = description}
+        }
+    });
+
+    return instance;
 };
 
 const displayController = (function() {
@@ -415,7 +442,7 @@ const DOMContentGenerator = (function() {
         const calendar = new Image();
         dueDateCont.classList.add("due-container");
         dueDate.classList.add("due");
-        dueDate.textContent = task.dueDate;
+        dueDate.textContent = task.dueDateHuman;
         calendar.src = calendarSrc;
         _appendChildren(dueDateCont, calendar, dueDate);
 
