@@ -27,7 +27,7 @@ const Task = function(title, description, dueDate, priority) {
         return _dueDate.getYear() === (new Date()).getYear();
     };
 
-    const instance = {switchStatus, shiftPriority};
+    const instance = {title, description, dueDate, priority, switchStatus, shiftPriority};
 
     Object.defineProperties(instance, {
         "dueDateHuman": {
@@ -68,17 +68,18 @@ const Project = function(name, description) {
     let _name = name;
     let _description = description;
 
-    const tasks = [];
+    let _tasks = [];
+    const tasks = _tasks;
 
     const addTask = function(task) {
-        tasks.push(task);
+        _tasks.push(task);
     };
 
     const deleteTask = function(index) {
-        tasks.splice(index, 1);
+        _tasks.splice(index, 1);
     };
 
-    const instance = {tasks, addTask, deleteTask};
+    const instance = {name, description, tasks, addTask, deleteTask};
 
     Object.defineProperties(instance, {
         "name": {
@@ -88,6 +89,10 @@ const Project = function(name, description) {
         "description": {
             get() {return _description},
             set(description) {_description = description}
+        },
+        "tasks": {
+            get() {return _tasks},
+            set(array) {_tasks = array}
         }
     });
 
@@ -147,6 +152,7 @@ const displayController = (function() {
             State.projects.splice(index, 1);
             renderProjects.call(projectsTab);
         }
+        storageController.populate();
     };
 
     const addProject = function() {
@@ -165,6 +171,8 @@ const displayController = (function() {
 
         renderProjects.call(projectsTab);
         _showAddBtn();
+
+        storageController.populate();
     };
 
     const addTask = function() {
@@ -194,6 +202,8 @@ const displayController = (function() {
 
         _showAddBtn();
         window.scrollTo(0, document.body.scrollHeight);
+
+        storageController.populate();
     };
 
     const switchTaskStatus = function() {
@@ -508,7 +518,7 @@ const DOMContentGenerator = (function() {
 const State = (function() {
     let _activeProjectIndex = 0;
 
-    const projects = [];
+    let _projects = [];
 
     const gettingStarted = Project(
         "Getting Started",
@@ -538,18 +548,18 @@ const State = (function() {
         "Along with my colaborators get this amazing project get going"
     );
     
-    projects.push(gettingStarted);
-    projects.push(agency);
+    _projects.push(gettingStarted);
+    _projects.push(agency);
 
     const addProject = function(project) {
-        projects.push(project);
+        _projects.push(project);
     }
     
-    const api = {projects, addProject};
+    const api = {addProject};
 
     Object.defineProperty(api, "activeProject", {
         get() {
-            return projects[_activeProjectIndex];
+            return _projects[_activeProjectIndex];
         },
 
         set(index) {
@@ -560,6 +570,15 @@ const State = (function() {
     Object.defineProperty(api, "dateOptions", {
         get() {
             return _dateOptions;
+        }
+    });
+
+    Object.defineProperty(api, "projects", {
+        set(array) {
+            _projects = array;
+        },
+        get() {
+            return _projects;
         }
     });
 
@@ -600,4 +619,37 @@ const LocaleConfig = (function() {
     return api;
 })();
 
+const storageController = (function() {
+    const populate = function() {
+        window.localStorage.setItem("projects", JSON.stringify(State.projects));
+    };
+
+    const retrieveStorage = function() {
+        if (!window.localStorage.getItem("projects")) {
+            populate();
+        }
+        const storedProjects = JSON.parse(window.localStorage.getItem("projects"));
+        State.projects = storedProjects.map(_restoreProject);
+    };
+
+    const _restoreProject = function(project) {
+        const restoredProject = Project(project.name, project.description);
+        restoredProject.tasks = project.tasks.map(_restoreTask);
+        return restoredProject;
+    };
+
+    const _restoreTask = function(task) {
+        task.dueDate = _restoreDate(task.dueDate);
+        const restoredTask = Task(task.title, task.description, task.dueDate, task.priority);
+        return restoredTask;
+    };
+
+    const _restoreDate = function(dateStringUTC) {
+        return new Date(dateStringUTC);
+    };
+
+    return {populate, retrieveStorage};
+})();
+
+storageController.retrieveStorage();
 displayController.loadPage();
